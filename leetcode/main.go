@@ -11,6 +11,5 @@ func main() {
 	//
 	//fmt.Println(leetcode.FindMedianSortedArrays(a, b))
 
-	s := "aacabdkacaa"
-	fmt.Println(leetcode.LongestPalindrome(s))
+	fmt.Println(leetcode.Convert("PAYPALISHIRING", 4))
 }
