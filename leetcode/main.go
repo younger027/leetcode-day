@@ -11,5 +11,7 @@ func main() {
 	//
 	//fmt.Println(leetcode.FindMedianSortedArrays(a, b))
 
-	fmt.Println(leetcode.Convert("PAYPALISHIRING", 4))
+	//fmt.Println(leetcode.Convert("PAYPALISHIRING", 4))
+
+	fmt.Println(leetcode.Reverse(-123))
 }
