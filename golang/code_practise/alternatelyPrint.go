@@ -1,8 +1,10 @@
 package code_practise
 
 import (
+	"context"
 	"fmt"
 	"sync"
+	"time"
 )
 
 //使用两个 goroutine 交替打印序列，一个 goroutine 打印数字， 另外一个 goroutine 打印字母， 最终效果如下：
@@ -70,4 +72,57 @@ func AlternatelyPrintNumAndLetter() {
 
 	wg.Wait()
 
+}
+
+func WriteChan(wg *sync.WaitGroup, ctx context.Context, ch chan int, i int, no int) {
+	defer wg.Done()
+
+	for {
+		select {
+		case <-ctx.Done():
+			fmt.Println("WriteChan ctx done, routine exit, no.", no)
+			return
+		default:
+			ch <- i
+			fmt.Println("write data:", i)
+			i++
+		}
+	}
+}
+
+func ReadChan(wg *sync.WaitGroup, ctx context.Context, ch chan int, no int) {
+	defer wg.Done()
+
+	for {
+		select {
+		case <-ctx.Done():
+			fmt.Println("ReadChan ctx done, routine exit, no.", no)
+			return
+		case i := <-ch:
+			fmt.Println("read data:", i)
+		}
+	}
+}
+
+func MutifyWriteReadChanOP() {
+	ctx, cancel := context.WithCancel(context.Background())
+	wg := &sync.WaitGroup{}
+	ch := make(chan int)
+
+	go func() {
+		time.Sleep(2 * time.Second)
+		cancel()
+	}()
+
+	wg.Add(6)
+	for i := 0; i < 3; i++ {
+		go WriteChan(wg, ctx, ch, i, i)
+	}
+
+	for i := 0; i < 3; i++ {
+		go ReadChan(wg, ctx, ch, i)
+	}
+
+	wg.Wait()
+	close(ch)
 }

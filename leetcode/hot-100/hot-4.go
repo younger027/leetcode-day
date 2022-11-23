@@ -31,6 +31,7 @@ nums2.length == n
 -10^6 <= nums1[i], nums2[i] <= 10^6
 */
 
+//解法一
 func FindMedianSortedArrays(nums1 []int, nums2 []int) float64 {
 	m := len(nums1)
 	n := len(nums2)
@@ -80,4 +81,38 @@ func minNum(a, b int) int {
 	}
 
 	return a
+}
+
+//解法二
+func FindMedianSortedArrays2(nums1 []int, nums2 []int) float64 {
+	m := len(nums1)
+	n := len(nums2)
+
+	min1 := (m + n + 1) / 2
+	min2 := (m + n + 2) / 2
+
+	a := findKth2(nums1, 0, m, nums2, 0, n, min1)
+	b := findKth2(nums1, 0, m, nums2, 0, n, min2)
+
+	return (float64(a) + float64(b)) * 0.5
+}
+
+func findKth2(nums1 []int, s1, e1 int, nums2 []int, s2, e2, k int) int {
+	if k/2-1 > (e1 - s1) {
+		return nums2[k-(e1-s1)-1]
+	}
+
+	if k/2-1 > (e2 - s2) {
+		return nums1[k-(e2-s2)-1]
+	}
+
+	if k == 1 {
+		return minNum(nums1[s1], nums2[s2])
+	}
+
+	if nums1[k/2-1] > nums2[k/2-1] {
+		return findKth2(nums1, s1, e1, nums2, k/2-1, e2, k-(e2-s2)/2)
+	}
+
+	return findKth2(nums1, k/2-1, e1, nums2, s2, e2, k-(e1-s1)/2)
 }
