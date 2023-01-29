@@ -8,12 +8,22 @@ import (
 	"net/http"
 	"os"
 	"strings"
-	"sync"
 	"testing"
 	"time"
 )
 
+const (
+	mutexLocked = 1 << iota // mutex is locked
+	mutexWoken
+	mutexStarving
+	mutexWaiterShift = iota
+)
+
 func TestAlternatelyPrintNumAndLetter(t *testing.T) {
+	fmt.Println(mutexLocked)
+	fmt.Println(mutexWoken)
+	fmt.Println(mutexStarving)
+	fmt.Println(mutexWaiterShift)
 	//AlternatelyPrintNumAndLetter()
 
 	//MutifyWriteReadChanOP()
@@ -44,42 +54,42 @@ func TestSomething(t *testing.T) {
 
 var SHARD_COUNT = 32
 
-// A "thread" safe map of type string:Anything.
-// To avoid lock bottlenecks this map is dived to several (SHARD_COUNT) map shards.
-type ConcurrentMap[V any] []*ConcurrentMapShared[V]
-
-// A "thread" safe string to anything map.
-type ConcurrentMapShared[V any] struct {
-	items        map[string]V
-	sync.RWMutex // Read Write mutex, guards access to internal map.
-}
-
-// Creates a new concurrent map.
-func New[V any]() ConcurrentMap[V] {
-	m := make(ConcurrentMap[V], SHARD_COUNT)
-	for i := 0; i < SHARD_COUNT; i++ {
-		m[i] = &ConcurrentMapShared[V]{items: make(map[string]V)}
-	}
-	return m
-}
-
-func (m ConcurrentMap[V]) GetShard(key string) *ConcurrentMapShared[V] {
-	return m[uint(fnv32(key))%uint(SHARD_COUNT)]
-}
-
-func (c *ConcurrentMap[V]) Store(key string, value V) {
-
-}
-
-// MapKeys returns a slice of all the keys in m.
-// The keys are not returned in any particular order.
-func MapKeys[Key comparable, Val any](m map[Key]Val) []Key {
-	s := make([]Key, 0, len(m))
-	for k := range m {
-		s = append(s, k)
-	}
-	return s
-}
+//// A "thread" safe map of type string:Anything.
+//// To avoid lock bottlenecks this map is dived to several (SHARD_COUNT) map shards.
+//type ConcurrentMap[V any] []*ConcurrentMapShared[V]
+//
+//// A "thread" safe string to anything map.
+//type ConcurrentMapShared[V any] struct {
+//	items        map[string]V
+//	sync.RWMutex // Read Write mutex, guards access to internal map.
+//}
+//
+//// Creates a new concurrent map.
+//func New[V any]() ConcurrentMap[V] {
+//	m := make(ConcurrentMap[V], SHARD_COUNT)
+//	for i := 0; i < SHARD_COUNT; i++ {
+//		m[i] = &ConcurrentMapShared[V]{items: make(map[string]V)}
+//	}
+//	return m
+//}
+//
+//func (m ConcurrentMap[V]) GetShard(key string) *ConcurrentMapShared[V] {
+//	return m[uint(fnv32(key))%uint(SHARD_COUNT)]
+//}
+//
+//func (c *ConcurrentMap[V]) Store(key string, value V) {
+//
+//}
+//
+//// MapKeys returns a slice of all the keys in m.
+//// The keys are not returned in any particular order.
+//func MapKeys[Key comparable, Val any](m map[Key]Val) []Key {
+//	s := make([]Key, 0, len(m))
+//	for k := range m {
+//		s = append(s, k)
+//	}
+//	return s
+//}
 
 func TestMerFile(t *testing.T) {
 	name1 := "/Users/rockey-lyy/GoWork/leetcode-day/result.txt"
