@@ -8,7 +8,7 @@ import (
 	"testing"
 )
 
-func initListNode(data []int) *ListNode {
+func InitListNode(data []int) *ListNode {
 	head := &ListNode{
 		Val:  data[0],
 		Next: nil,
@@ -32,7 +32,7 @@ func initListNode(data []int) *ListNode {
 func TestRemoveListNode(t *testing.T) {
 	//CountLetterFromSlice()
 
-	node := initListNode([]int{1, 2, 3, 4, 5})
+	node := InitListNode([]int{1, 2, 3, 4, 5})
 
 	newNode := RemoveNthFromEnd(node, 1)
 
