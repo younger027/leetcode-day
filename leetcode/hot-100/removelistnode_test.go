@@ -9,6 +9,10 @@ import (
 )
 
 func InitListNode(data []int) *ListNode {
+	if len(data) == 0 {
+		return nil
+	}
+
 	head := &ListNode{
 		Val:  data[0],
 		Next: nil,
