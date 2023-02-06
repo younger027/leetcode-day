@@ -48,7 +48,7 @@ package leetcode
 
 */
 
-func nextPermutation(nums []int) {
+func NextPermutation(nums []int) {
 	//条件1：找到第一个升序的i,j，i就是前面的[小数]
 	//条件2：从后往前找到，找到大于i的k值。这就是尽可能小的大数。一定要理解的是：要在最后边的低位进行交换。才是"下一个排列的"重点。
 	//条件3：交换i,k以后，j,end一定是降序的。逆序交换即可
@@ -61,14 +61,14 @@ func nextPermutation(nums []int) {
 	i, j, k := len(nums)-2, len(nums)-1, len(nums)-1
 
 	//条件1
-	for i >= 0 && nums[i] < nums[j] {
+	for i >= 0 && nums[i] >= nums[j] {
 		i--
 		j--
 	}
 
 	//条件2
 	if i >= 0 { // 不是最后一个排列，最后一个排列的话，条件3 j=0全部交换
-		for k >= 0 && nums[i] > nums[k] {
+		for nums[i] >= nums[k] {
 			k--
 		}
 		nums[i], nums[k] = nums[k], nums[i]
