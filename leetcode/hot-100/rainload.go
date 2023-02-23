@@ -110,7 +110,6 @@ func GetMax(a, b int) int {
 	}
 
 	return a
-
 }
 
 //solution 3 dynamic programming
