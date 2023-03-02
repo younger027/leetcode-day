@@ -10,3 +10,27 @@ func TestGroupAnagrams(t *testing.T) {
 func TestMaxSubArray(t *testing.T) {
 	t.Log(MaxSubArray_2([]int{5, 4, -1, 7, 8}))
 }
+
+func TestCanJump(t *testing.T) {
+	nums := []int{3, 2, 1, 0, 4}
+	t.Log(CanJump(nums))
+
+	t.Log(CanJump_2(nums))
+}
+
+func TestMerge(t *testing.T) {
+	nums := [][]int{{1, 3}, {2, 6}, {8, 10}, {15, 18}}
+	//nums := [][]int{{1, 4}, {4, 5}}
+	//nums := [][]int{{1, 4}, {0, 4}}
+	t.Log(Merge(nums))
+}
+
+func TestUniquePaths(t *testing.T) {
+	t.Log(UniquePaths(3, 2))
+}
+
+func Test(t *testing.T) {
+	nums := []int{1, 3, -1, -3, 5, 3, 6, 7}
+
+	t.Log(MaxSlidingWindow(nums, 3))
+}
