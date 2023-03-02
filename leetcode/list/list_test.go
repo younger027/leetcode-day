@@ -40,5 +40,15 @@ func TestPartition(t *testing.T) {
 }
 
 func TestInitHeap(t *testing.T) {
-	InitHeap()
+	//InitHeap()
+
+	l1 := InitListNode([]int{1, 3, 5})
+	l2 := InitListNode([]int{2, 6})
+	l3 := InitListNode([]int{4, 7})
+
+	ret := MergeKLists([]*ListNode{l1, l2, l3})
+	for ret != nil {
+		fmt.Println("node.value:", ret.Val)
+		ret = ret.Next
+	}
 }

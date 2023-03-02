@@ -65,9 +65,9 @@ type NodeHeap struct {
 	data []*ListNode
 }
 
-func (h NodeHeap) Len() int           { return len(h.data) }
-func (h NodeHeap) Less(i, j int) bool { return h.data[i].Val < h.data[j].Val }
-func (h NodeHeap) Swap(i, j int)      { h.data[i].Val, h.data[j].Val = h.data[j].Val, h.data[i].Val }
+func (h *NodeHeap) Len() int           { return len(h.data) }
+func (h *NodeHeap) Less(i, j int) bool { return h.data[i].Val < h.data[j].Val }
+func (h *NodeHeap) Swap(i, j int)      { h.data[i].Val, h.data[j].Val = h.data[j].Val, h.data[i].Val }
 
 func (h *NodeHeap) Push(x any) {
 	// Push and Pop use pointer receivers because they modify the slice's length,
@@ -121,19 +121,37 @@ func InitHeap() {
 
 //solution 1 base on min heap
 
-//func mergeKLists(lists []*ListNode) *ListNode {
-//	h := &ListNode{}
-//	heap.Init(h)
-//
-//	for _, list := range lists {
-//		if list != nil {
-//			heap.Push(h, list.Val)
-//		}
-//	}
-//
-//	result := &ListNode{
-//		Val:  0,
-//		Next: nil,
-//	}
-//
-//}
+func MergeKLists(lists []*ListNode) *ListNode {
+	h := &NodeHeap{
+		data: []*ListNode{},
+	}
+	heap.Init(h)
+
+	for _, list := range lists {
+		if list != nil {
+			heap.Push(h, list)
+			fmt.Println("heap.Push--", list.Val)
+
+		}
+	}
+
+	result := &ListNode{
+		Val:  0,
+		Next: nil,
+	}
+	temp := result
+
+	for h.Len() != 0 {
+		node := h.Pop().(*ListNode)
+		temp.Next = node
+		fmt.Println("heap.Pop--xxx", node.Val)
+
+		if node.Next != nil {
+			fmt.Println("heap.Push--xxx", node.Val)
+			h.Push(node.Next)
+		}
+		temp = temp.Next
+	}
+
+	return result
+}
