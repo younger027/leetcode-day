@@ -52,3 +52,31 @@ func TestInitHeap(t *testing.T) {
 		ret = ret.Next
 	}
 }
+
+func TestMiddleNode(t *testing.T) {
+	l1 := InitListNode([]int{1, 2, 3, 4, 5, 6})
+
+	t.Log(MiddleNode(l1).Val)
+}
+
+func TestIsRingList(t *testing.T) {
+	l1 := InitListNode([]int{1, 2, 3, 4, 5, 6})
+
+	head := l1
+	l1.Next.Next.Next.Next.Next.Next = head.Next.Next.Next
+
+	t.Log(IsRingList(l1))
+
+	t.Log(RingIntersectionNode(l1).Val)
+
+	t.Log(RingLength(l1))
+}
+
+func TestGetIntersectionNode(t *testing.T) {
+	l1 := InitListNode([]int{1, 2, 3, 4, 5, 6, 10})
+	l2 := InitListNode([]int{7, 8, 9})
+
+	//l2.Next.Next.Next = l1.Next.Next.Next
+
+	t.Log(GetIntersectionNode(l1, l2))
+}
