@@ -67,7 +67,7 @@ type NodeHeap struct {
 
 func (h *NodeHeap) Len() int           { return len(h.data) }
 func (h *NodeHeap) Less(i, j int) bool { return h.data[i].Val < h.data[j].Val }
-func (h *NodeHeap) Swap(i, j int)      { h.data[i].Val, h.data[j].Val = h.data[j].Val, h.data[i].Val }
+func (h *NodeHeap) Swap(i, j int)      { h.data[i], h.data[j] = h.data[j], h.data[i] }
 
 func (h *NodeHeap) Push(x any) {
 	// Push and Pop use pointer receivers because they modify the slice's length,
@@ -120,6 +120,9 @@ func InitHeap() {
 }
 
 //solution 1 base on min heap
+//time complex: O(Nlogk)  优先队列 pq 中的元素个数最多是 k，所以一次 poll 或者 add 方法的时间复杂度是 O(logk)；
+//所有的链表节点都会被加入和弹出 pq，所以算法整体的时间复杂度是 O(Nlogk)，其中 k 是链表的条数，N 是这些链表的节点总数。
+//space complex :O(1)  not init new space
 
 func MergeKLists(lists []*ListNode) *ListNode {
 	h := &NodeHeap{
@@ -142,16 +145,16 @@ func MergeKLists(lists []*ListNode) *ListNode {
 	temp := result
 
 	for h.Len() != 0 {
-		node := h.Pop().(*ListNode)
+		node := heap.Pop(h).(*ListNode)
 		temp.Next = node
 		fmt.Println("heap.Pop--xxx", node.Val)
 
 		if node.Next != nil {
-			fmt.Println("heap.Push--xxx", node.Val)
-			h.Push(node.Next)
+			fmt.Println("heap.Push--xxx", node.Next.Val)
+			heap.Push(h, node.Next)
 		}
 		temp = temp.Next
 	}
 
-	return result
+	return result.Next
 }
