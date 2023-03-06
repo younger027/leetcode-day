@@ -74,9 +74,15 @@ func TestIsRingList(t *testing.T) {
 
 func TestGetIntersectionNode(t *testing.T) {
 	l1 := InitListNode([]int{1, 2, 3, 4, 5, 6, 10})
-	l2 := InitListNode([]int{7, 8, 9})
+	//l2 := InitListNode([]int{7, 8, 9})
 
 	//l2.Next.Next.Next = l1.Next.Next.Next
 
-	t.Log(GetIntersectionNode(l1, l2))
+	//t.Log(GetIntersectionNode(l1, l2))
+
+	node := ReverseList(l1)
+	for node != nil {
+		fmt.Println("node---", node.Val)
+		node = node.Next
+	}
 }

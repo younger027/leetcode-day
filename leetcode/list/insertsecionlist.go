@@ -1,5 +1,7 @@
 package list
 
+import "fmt"
+
 /*
 160. 相交链表
 
@@ -97,5 +99,23 @@ func GetIntersectionNode(headA, headB *ListNode) *ListNode {
 	return h1
 }
 
-海量文章灌进互联网沙漠，竟没有一滴水可以喝。可悲可叹。
-学习、写作是一件很神圣的事情。当今，每天有数以兆计的信息进入这篇荒漠，找寻可靠、准确的信息变成一项不可或缺的技能。
+func ReverseList(head *ListNode) *ListNode {
+	if head == nil {
+		return nil
+	}
+
+	var prev, next *ListNode
+	cur := head
+
+	for cur != nil {
+		next = cur.Next
+
+		fmt.Println("cur node-", cur.Val)
+
+		cur.Next = prev
+		prev = cur
+		cur = next
+	}
+
+	return prev
+}
