@@ -173,3 +173,9 @@ func NetGetData(k string) string {
 
 	return title
 }
+
+func TestSafeCloseChanOneSender(t *testing.T) {
+	//SafeCloseChanOneSender()
+
+	SafeCloseChanMSender()
+}

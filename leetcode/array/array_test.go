@@ -17,3 +17,8 @@ func TestRemoveElement(t *testing.T) {
 		fmt.Println("node value---", array[i])
 	}
 }
+
+func TestBackspaceCompare(t *testing.T) {
+	//BackspaceCompare("ab##", "")
+	t.Log(BackspaceCompareO1("ab#c", "ad#c"))
+}
