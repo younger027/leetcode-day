@@ -29,8 +29,13 @@ func TestUniquePaths(t *testing.T) {
 	t.Log(UniquePaths(3, 2))
 }
 
-func Test(t *testing.T) {
+func TestMaxSlidingWindow(t *testing.T) {
 	nums := []int{1, 3, -1, -3, 5, 3, 6, 7}
 
 	t.Log(MaxSlidingWindow(nums, 3))
+}
+
+func TestLongestPalindrome2(t *testing.T) {
+
+	t.Log(LongestPalindrome2("abbac"))
 }

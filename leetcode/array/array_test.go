@@ -22,3 +22,16 @@ func TestBackspaceCompare(t *testing.T) {
 	//BackspaceCompare("ab##", "")
 	t.Log(BackspaceCompareO1("ab#c", "ad#c"))
 }
+
+func TestConstructorTwo(t *testing.T) {
+	matrix := [][]int{
+		{3, 0, 1, 4, 2},
+		{5, 6, 3, 2, 1},
+		{1, 2, 0, 1, 5},
+		{4, 1, 0, 1, 7},
+		{1, 0, 3, 0, 5}}
+	this := ConstructorTwo(matrix)
+	this.Show()
+
+	t.Log(this.SumRegion(2, 1, 4, 3))
+}

@@ -1,7 +1,5 @@
 package leetcode
 
-import "fmt"
-
 /*
 5.Longest Palindromic Substring
 
@@ -43,7 +41,6 @@ func LongestPalindrome(s string) string {
 			if s[i] == s[j] {
 				isPalindrome := findPalindrome(s, i, j)
 				if isPalindrome && (j-i) > (end-start) {
-					fmt.Print("finshed:", i, j)
 					start = i
 					end = j
 					continue
@@ -74,4 +71,32 @@ func findPalindrome(s string, i, j int) bool {
 	}
 
 	return true
+}
+
+//solution2.从中间向两边扩展。如果长度是奇数的时候他只有一个中间字符，如果是偶数的时候，可以认为他有2个中心字符。
+func LongestPalindrome2(s string) string {
+	res := ""
+	for i := 0; i < len(s); i++ {
+		s1 := Palindrome(s, i, i)
+		s2 := Palindrome(s, i, i+1)
+
+		if len(res) < len(s1) {
+			res = s1
+		}
+
+		if len(res) < len(s2) {
+			res = s2
+		}
+	}
+
+	return res
+}
+
+func Palindrome(s string, l, r int) string {
+	for l >= 0 && r < len(s) && s[l] == s[r] {
+		l -= 1
+		r += 1
+	}
+
+	return s[l+1 : r]
 }

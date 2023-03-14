@@ -188,6 +188,27 @@ func BackspaceCompareO1(s string, t string) bool {
 		j--
 
 	}
-
 	return true
+}
+
+//303-区域和检索 - 数组不可变
+//preNums[i] 记录 nums[0..i-1] 的累加和
+
+type NumArray struct {
+	preNums []int
+}
+
+func Constructor(nums []int) NumArray {
+	preNums := make([]int, len(nums)+1)
+	for i := 1; i < len(nums)+1; i++ {
+		preNums[i] = nums[i-1] + preNums[i-1]
+	}
+
+	return NumArray{
+		preNums: preNums,
+	}
+}
+
+func (this *NumArray) SumRange(left int, right int) int {
+	return this.preNums[right+1] - this.preNums[left]
 }

@@ -83,7 +83,7 @@ func SafeCloseChanMSender() {
 	closed := make(chan struct{})
 	closing := make(chan struct{})
 	dataCh := make(chan int)
-	middleCh := make(chan int)
+	middleCh := make(chan int) //never close.wait all goroutine exit.GC deal with middleCh
 
 	stopCode := func() {
 		select {
