@@ -34,4 +34,6 @@ func TestConstructorTwo(t *testing.T) {
 	this.Show()
 
 	t.Log(this.SumRegion(2, 1, 4, 3))
+	t.Log(this.SumRegion(1, 1, 2, 2))
+	t.Log(this.SumRegion(1, 2, 2, 4))
 }

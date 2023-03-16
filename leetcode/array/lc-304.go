@@ -64,50 +64,12 @@ func calculate(matrix [][]int, row, col int) int {
 
 	return res
 }
+
 func (this *NumMatrix) SumRegion(row1 int, col1 int, row2 int, col2 int) int {
 	fmt.Print(this.preNum[row2][col2], this.preNum[row2][col1], this.preNum[row1][col2], this.preNum[row1][col1])
-	return this.preNum[row2][col2] - this.preNum[row2][col1] - this.preNum[row1][col2] + this.preNum[row1][col1]
+	return this.preNum[row2][col2] - this.preNum[row2][col1-1] - this.preNum[row1-1][col2] + this.preNum[row1-1][col1]
 }
 
-/**
- * Your NumMatrix object will be instantiated and called as such:
- * obj := Constructor(matrix);
- * param_1 := obj.SumRegion(row1,col1,row2,col2);
- */
-
-//type NumMatrix struct {
-//	// 定义：preSum[i][j] 记录 matrix 中子矩阵 [0, 0, i-1, j-1] 的元素和
-//	preSum [][]int
-//}
-//
-func Constructor1(matrix [][]int) NumMatrix {
-	m, n := len(matrix), len(matrix[0])
-	if m == 0 || n == 0 {
-		return NumMatrix{}
-	}
-	// 构造前缀和矩阵
-	preSum := make([][]int, m+1)
-	for i := 0; i <= m; i++ {
-		preSum[i] = make([]int, n+1)
-	}
-	for i := 1; i <= m; i++ {
-		for j := 1; j <= n; j++ {
-			// 计算每个矩阵 [0, 0, i, j] 的元素和
-			preSum[i][j] = preSum[i-1][j] + preSum[i][j-1] + matrix[i-1][j-1] - preSum[i-1][j-1]
-		}
-	}
-	return NumMatrix{preNum: preSum}
-}
-
-//
-//// 计算子矩阵 [x1, y1, x2, y2] 的元素和
-//func (this *NumMatrix) SumRegion(x1 int, y1 int, x2 int, y2 int) int {
-//	// 目标矩阵之和由四个相邻矩阵运算获得
-//	fmt.Print(this.preSum[x2+1][y2+1], this.preSum[x1][y2+1], this.preSum[x2+1][y1], this.preSum[x1][y1])
-//
-//	return this.preSum[x2+1][y2+1] - this.preSum[x1][y2+1] - this.preSum[x2+1][y1] + this.preSum[x1][y1]
-//}
-//
 func (this *NumMatrix) Show() {
 	for i := 0; i < len(this.preNum); i++ {
 		for j := 0; j < len(this.preNum[0]); j++ {
