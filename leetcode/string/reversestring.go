@@ -22,13 +22,41 @@ func ReverseString(s string) string {
 	if len(s) <= 1 {
 		return s
 	}
-
 	r := []rune(s)
 	for i, j := 0, len(r)-1; i < len(r)/2; i, j = i+1, j-1 {
 		r[i], r[j] = r[j], r[i]
 	}
 
-	fmt.Print("ssss:", string(r))
+	fmt.Println("reverse:", string(r))
+
+	//去除首尾空格
+	i, j := 0, len(r)
+	for r[i] == ' ' {
+		i++
+	}
+
+	for r[j-1] == ' ' {
+		j--
+	}
+
+	r = r[i:j]
+
+	fmt.Println("del  head tail space:", string(r))
+
+	//去除中间多余的空格
+	fast, slow := 0, 0
+	for fast < len(r) {
+		if r[fast] == ' ' && r[fast] == r[fast-1] && fast-1 > 0 {
+			fast++
+			continue
+		}
+		r[slow] = r[fast]
+		slow++
+		fast++
+	}
+	r = r[:slow]
+	fmt.Println("del middle space:", string(r))
+
 	last := 0
 	for k := 0; k < len(r); k++ {
 		if r[k] == ' ' || k == len(r)-1 {
