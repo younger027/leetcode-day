@@ -75,48 +75,118 @@ func RotateMatrix2(matrix [][]int) {
 	}
 }
 
+//54,螺旋遍历矩阵
+
 func SpiralOrder(matrix [][]int) []int {
-	m, n := len(matrix), len(matrix[0])
-	upper_bound, lower_bound := 0, m-1
-	left_bound, right_bound := 0, n-1
-	res := make([]int, 0, m*n)
-	// len(res) == m * n 则遍历完整个数组
-	for len(res) < m*n {
-		if upper_bound <= lower_bound {
-			// 在顶部从左向右遍历
-			for j := left_bound; j <= right_bound; j++ {
-				res = append(res, matrix[upper_bound][j])
+	m := len(matrix)
+	n := len(matrix[0])
+
+	result := make([]int, 0)
+	leftUp := 0   //上边界
+	leftDown := 0 //左边界
+
+	rightUp := n - 1   //右边界
+	rightDown := m - 1 //下边界
+
+	for len(result) < m*n {
+		//上边界小于等于下边界的时候，才可以进行遍历.左--->右
+		if leftUp <= rightDown {
+			for i := leftUp; i <= rightUp; i++ {
+				result = append(result, matrix[leftUp][i])
 			}
-			// 上边界下移
-			upper_bound++
+			leftUp += 1
 		}
 
-		if left_bound <= right_bound {
-			// 在右侧从上向下遍历
-			for i := upper_bound; i <= lower_bound; i++ {
-				res = append(res, matrix[i][right_bound])
+		//左边界小于等于右边界的时候，才可以遍历。上--->下
+		if leftDown <= rightUp {
+			for i := leftUp; i <= rightDown; i++ {
+				result = append(result, matrix[i][rightUp])
 			}
-			// 右边界左移
-			right_bound--
+			rightUp -= 1
 		}
 
-		if upper_bound <= lower_bound {
-			// 在底部从右向左遍历
-			for j := right_bound; j >= left_bound; j-- {
-				res = append(res, matrix[lower_bound][j])
+		//上边界小于等于下边界的时候，才可以进行遍历.右--->左
+		if leftUp <= rightDown {
+			for i := rightUp; i >= leftDown; i-- {
+				result = append(result, matrix[rightDown][i])
 			}
-			// 下边界上移
-			lower_bound--
+			rightDown -= 1
 		}
 
-		if left_bound <= right_bound {
-			// 在左侧从下向上遍历
-			for i := lower_bound; i >= upper_bound; i-- {
-				res = append(res, matrix[i][left_bound])
+		//左边界小于等于右边界的时候，才可以遍历。下--->上
+		if leftDown <= rightUp {
+			for i := rightDown; i >= leftUp; i-- {
+				result = append(result, matrix[i][leftDown])
 			}
-			// 左边界右移
-			left_bound++
+			leftDown += 1
 		}
 	}
-	return res
+
+	return result
+}
+
+/*
+59. 螺旋矩阵 II
+中等
+给你一个正整数 n ，生成一个包含 1 到 n2 所有元素，且元素按顺时针顺序螺旋排列的 n x n 正方形矩阵 matrix 。
+
+示例 1：
+输入：n = 3
+输出：[[1,2,3],[8,9,4],[7,6,5]]
+示例 2：
+
+输入：n = 1
+输出：[[1]]
+提示：
+1 <= n <= 20*/
+
+func GenerateMatrix(n int) [][]int {
+	leftUp := 0        //上边界
+	leftDown := 0      //左边界
+	rightUp := n - 1   //右边界
+	rightDown := n - 1 //下边界
+	value := 1
+
+	//init result matrix
+	result := make([][]int, n)
+	for i := 0; i < len(result); i++ {
+		result[i] = make([]int, n)
+	}
+
+	for value <= n*n {
+		if leftUp <= rightDown {
+			for i := leftDown; i <= rightUp; i++ {
+				result[leftUp][i] = value
+				value += 1
+			}
+			leftUp += 1
+		}
+
+		if leftDown <= rightUp {
+			for i := leftUp; i <= rightDown; i++ {
+				result[i][rightUp] = value
+				value += 1
+			}
+			rightUp -= 1
+		}
+
+		if leftUp <= rightDown {
+			for i := rightUp; i >= leftDown; i-- {
+				result[rightDown][i] = value
+				value += 1
+			}
+			rightDown -= 1
+		}
+
+		if leftDown <= rightUp {
+			for i := rightDown; i >= leftUp; i-- {
+				result[i][leftDown] = value
+				value += 1
+			}
+			leftDown += 1
+		}
+
+	}
+
+	return result
 }

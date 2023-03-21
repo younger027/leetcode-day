@@ -36,3 +36,8 @@ func TestSpiralOrder(t *testing.T) {
 	t.Log(SpiralOrder(matrix))
 
 }
+
+func TestGenerateMatrix(t *testing.T) {
+	s := GenerateMatrix(4)
+	t.Log(s)
+}
