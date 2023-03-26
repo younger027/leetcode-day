@@ -38,3 +38,9 @@ func TestLengthOfLongestSubstring(t *testing.T) {
 	t.Log(LengthOfLongestSubstring("bbbbb"))
 
 }
+
+func TestFindRepeatedDnaSequences(t *testing.T) {
+
+	t.Log(FindRepeatedDnaSequences("AAAAACCCCCAAAAACCCCCCAAAAAGGGTTT"))
+
+}
