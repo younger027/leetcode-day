@@ -1,6 +1,9 @@
 package string
 
-import "fmt"
+import (
+	"fmt"
+	"math"
+)
 
 /*
 76. 最小覆盖子串
@@ -35,12 +38,15 @@ s 和 t 由英文字母组成
 进阶：你能设计一个在 o(m+n) 时间内解决此问题的算法吗？
 */
 
+//自己写的算法，可以通过case。但是时间超时。
 func MinWindow(s string, t string) string {
-	if len(s) == 0 || len(t) == 0 {
+	if len(s) == 0 || len(t) == 0 || len(s) < len(t) {
 		return ""
 	}
 
-	result := s
+	start := 0
+	length := math.MaxInt32
+
 	window := make(map[rune]int, 26)
 	ss := []rune(s)
 	tt := []rune(t)
@@ -52,24 +58,26 @@ func MinWindow(s string, t string) string {
 		right += 1
 
 		//检查window是否满足需求
-		if CheckWindow(&window, tt) {
-			result = s[left:right]
-		} else {
+		if !CheckWindow(&window, tt) {
 			continue
 		}
 
 		fmt.Printf("window: [%d, %d)\n", left, right)
-		fmt.Printf("result: %s\n", result)
+		fmt.Printf("result: [%d, %d)\n", start, length)
 		for right > left {
+			if length > right-left {
+				start = left
+				length = right - start
+				fmt.Printf("result-----: [%d, %d)\n", start, length)
+			}
+
 			leftCh := rune(s[left])
 			if window[leftCh] > 0 {
 				window[leftCh] -= 1
 			}
 			left += 1
 
-			if CheckWindow(&window, tt) && len(result) > right-left {
-				result = s[left:right]
-			} else {
+			if !CheckWindow(&window, tt) {
 				break
 			}
 
@@ -77,7 +85,11 @@ func MinWindow(s string, t string) string {
 
 	}
 
-	return result
+	if length == math.MaxInt32 {
+		return ""
+	}
+
+	return s[start : start+length]
 }
 
 func CheckWindow(window *map[rune]int, t []rune) bool {
@@ -97,4 +109,56 @@ func CheckWindow(window *map[rune]int, t []rune) bool {
 	}
 
 	return true
+}
+
+//代码随想录的算法参考
+
+func MinWindowTwo(s string, t string) string {
+	if len(s) == 0 || len(t) == 0 || len(s) < len(t) {
+		return ""
+	}
+
+	start := 0
+	length := math.MaxInt32
+	window := make(map[byte]int) //不必存所有的字符出现的次数。只存t存在的即可
+	need := make(map[byte]int, len(t))
+	for i := range t {
+		need[t[i]] += 1
+	}
+
+	valid := 0 // 判断窗口中是否已经包含了字串 t 中所有字符
+	left, right := 0, 0
+
+	for right < len(s) {
+		c := s[right]
+		right++
+		if _, ok := need[c]; ok {
+			window[c]++
+			if window[c] == need[c] {
+				valid++
+			}
+		}
+
+		for valid == len(need) {
+			if right-left < length {
+				start = left
+				length = right - left
+			}
+
+			d := s[left]
+			left++
+			if _, ok := need[d]; ok {
+				if window[d] == need[d] {
+					valid--
+				}
+				window[d]--
+			}
+		}
+	}
+
+	if length == math.MaxInt32 {
+		return ""
+	}
+
+	return s[start : start+length]
 }
