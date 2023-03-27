@@ -61,19 +61,23 @@ func preorderTraverse(root *TreeNode) []int {
 	return result
 }
 
-func InitBinaryTree(preorder []int) *TreeNode {
-	if len(preorder) == 0 {
-		return nil
+func InitBinaryTree(data []int, i int) *TreeNode {
+	root := &TreeNode{
+		Value: data[i],
+		Left:  nil,
+		Right: nil,
 	}
-	var i int
-	root := &TreeNode{Value: preorder[0]}
-	for i = 1; i < len(preorder); i++ {
-		if preorder[i] > root.Value {
-			break
-		}
+
+	if i < len(data) && 2*i+1 < len(data) {
+		fmt.Println("left----", 2*i+1, i)
+		root.Left = InitBinaryTree(data, 2*i+1)
 	}
-	root.Left = InitBinaryTree(preorder[1:i])
-	root.Right = InitBinaryTree(preorder[i:])
+
+	if i < len(data) && 2*i+2 < len(data) {
+		fmt.Println("right----", 2*i+2, i)
+		root.Right = InitBinaryTree(data, 2*i+2)
+	}
+
 	return root
 }
 

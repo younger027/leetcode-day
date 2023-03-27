@@ -3,7 +3,9 @@ package tree
 import "testing"
 
 func TestFindInitBinaryTree(t *testing.T) {
-	data := []int{2, 4, 5, 1, 3}
-	root := InitBinaryTree(data)
+	data := []int{3, 9, 20, -1, -1, 15, 7}
+	root := InitBinaryTree(data, 0)
 	t.Log(root)
+
+	LevelTraverse(root)
 }
