@@ -1,6 +1,9 @@
-package leetcode
+package tree
 
-import leetcode "leetcode/leetcode/hot-100"
+import (
+	"fmt"
+	leetcode "leetcode/leetcode/hot-100"
+)
 
 type TreeNode struct {
 	Value int
@@ -58,6 +61,22 @@ func preorderTraverse(root *TreeNode) []int {
 	return result
 }
 
+func InitBinaryTree(preorder []int) *TreeNode {
+	if len(preorder) == 0 {
+		return nil
+	}
+	var i int
+	root := &TreeNode{Value: preorder[0]}
+	for i = 1; i < len(preorder); i++ {
+		if preorder[i] > root.Value {
+			break
+		}
+	}
+	root.Left = InitBinaryTree(preorder[1:i])
+	root.Right = InitBinaryTree(preorder[i:])
+	return root
+}
+
 /*
 543. 二叉树的直径
 简单
@@ -89,4 +108,33 @@ func DiameterOfBinaryTree(root *TreeNode) int {
 	number = leetcode.Max(number, max)
 
 	return 1 + leetcode.Max(left, right)
+}
+
+//层序遍历
+func LevelTraverse(root *TreeNode) {
+	if root == nil {
+		return
+	}
+
+	nodeArray := make([]*TreeNode, 0)
+	nodeArray = append(nodeArray, root)
+	i := 0
+	for len(nodeArray) > 0 {
+		level := fmt.Sprintf("level %d, value:", i)
+		for _, tNode := range nodeArray {
+			level += fmt.Sprintf("%d", tNode.Value)
+			node := nodeArray[0]
+			nodeArray = nodeArray[1:]
+			if node.Left != nil {
+				nodeArray = append(nodeArray, node.Left)
+			}
+
+			if node.Right != nil {
+				nodeArray = append(nodeArray, node.Right)
+			}
+		}
+
+		fmt.Println(level)
+		i += 1
+	}
 }
