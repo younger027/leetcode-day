@@ -7,5 +7,7 @@ func TestFindInitBinaryTree(t *testing.T) {
 	root := InitBinaryTree(data, 0)
 	t.Log(root)
 
-	LevelTraverse(root)
+	t.Log(levelOrderBottom(root))
+
+	t.Log(rightSideView(root))
 }

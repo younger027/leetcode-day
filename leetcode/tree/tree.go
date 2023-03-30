@@ -69,12 +69,10 @@ func InitBinaryTree(data []int, i int) *TreeNode {
 	}
 
 	if i < len(data) && 2*i+1 < len(data) {
-		fmt.Println("left----", 2*i+1, i)
 		root.Left = InitBinaryTree(data, 2*i+1)
 	}
 
 	if i < len(data) && 2*i+2 < len(data) {
-		fmt.Println("right----", 2*i+2, i)
 		root.Right = InitBinaryTree(data, 2*i+2)
 	}
 
@@ -115,9 +113,10 @@ func DiameterOfBinaryTree(root *TreeNode) int {
 }
 
 //层序遍历
-func LevelTraverse(root *TreeNode) {
+func LevelTraverse(root *TreeNode) [][]int {
+	result := make([][]int, 0)
 	if root == nil {
-		return
+		return result
 	}
 
 	nodeArray := make([]*TreeNode, 0)
@@ -125,10 +124,88 @@ func LevelTraverse(root *TreeNode) {
 	i := 0
 	for len(nodeArray) > 0 {
 		level := fmt.Sprintf("level %d, value:", i)
+		levelResult := make([]int, 0)
 		for _, tNode := range nodeArray {
 			level += fmt.Sprintf("%d", tNode.Value)
+			levelResult = append(levelResult, tNode.Value)
 			node := nodeArray[0]
 			nodeArray = nodeArray[1:]
+			if node.Left != nil {
+				nodeArray = append(nodeArray, node.Left)
+			}
+
+			if node.Right != nil {
+				nodeArray = append(nodeArray, node.Right)
+			}
+		}
+
+		result = append(result, levelResult)
+		fmt.Println(level)
+		i += 1
+	}
+
+	return result
+}
+
+//层序遍历二
+func levelOrderBottom(root *TreeNode) [][]int {
+	result := make([][]int, 0)
+	if root == nil {
+		return result
+	}
+
+	nodeArray := make([]*TreeNode, 0)
+	nodeArray = append(nodeArray, root)
+	i := 0
+	for len(nodeArray) > 0 {
+		level := fmt.Sprintf("level %d, value:", i)
+		levelResult := make([]int, 0)
+		for _, tNode := range nodeArray {
+			level += fmt.Sprintf("%d", tNode.Value)
+			levelResult = append(levelResult, tNode.Value)
+			node := nodeArray[0]
+			nodeArray = nodeArray[1:]
+			if node.Left != nil {
+				nodeArray = append(nodeArray, node.Left)
+			}
+
+			if node.Right != nil {
+				nodeArray = append(nodeArray, node.Right)
+			}
+		}
+
+		result = append(result, levelResult)
+		fmt.Println(level)
+		i += 1
+	}
+
+	for i := 0; i < len(result)/2; i++ {
+		result[i], result[len(result)-i-1] = result[len(result)-i-1], result[i]
+	}
+
+	return result
+}
+
+func rightSideView(root *TreeNode) []int {
+	result := make([]int, 0)
+	if root == nil {
+		return result
+	}
+
+	nodeArray := make([]*TreeNode, 0)
+	nodeArray = append(nodeArray, root)
+	i := 0
+	for len(nodeArray) > 0 {
+		level := fmt.Sprintf("level %d, value:", i)
+		for index, tNode := range nodeArray {
+			level += fmt.Sprintf("%d", tNode.Value)
+
+			node := nodeArray[0]
+			nodeArray = nodeArray[1:]
+			if index == len(nodeArray)-1 {
+				result = append(result, tNode.Value)
+			}
+			
 			if node.Left != nil {
 				nodeArray = append(nodeArray, node.Left)
 			}
@@ -141,4 +218,6 @@ func LevelTraverse(root *TreeNode) {
 		fmt.Println(level)
 		i += 1
 	}
+
+	return result
 }
