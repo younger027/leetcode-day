@@ -1,6 +1,7 @@
 package tree
 
 import (
+	list2 "container/list"
 	"fmt"
 	leetcode "leetcode/leetcode/hot-100"
 )
@@ -47,21 +48,11 @@ func MaxDepth2(root *TreeNode) int {
 	return leetcode.Max(leftMax, rightMax) + 1
 }
 
-//前序遍历
-func preorderTraverse(root *TreeNode) []int {
-	result := make([]int, 0)
-	if root == nil {
-		return result
+func InitBinaryTree(data []int, i int) *TreeNode {
+	if data[i] == -1 {
+		return nil
 	}
 
-	result = append(result, root.Value)
-	result = append(result, preorderTraverse(root.Left)...)
-	result = append(result, preorderTraverse(root.Right)...)
-
-	return result
-}
-
-func InitBinaryTree(data []int, i int) *TreeNode {
 	root := &TreeNode{
 		Value: data[i],
 		Left:  nil,
@@ -96,20 +87,35 @@ func InitBinaryTree(data []int, i int) *TreeNode {
 注意：两结点之间的路径长度是以它们之间边的数目表示。
 */
 
-var number int
-
-func DiameterOfBinaryTree(root *TreeNode) int {
+func diameterOfBinaryTree(root *TreeNode) int {
 	if root == nil {
 		return 0
 	}
 
-	left := DiameterOfBinaryTree(root.Left)
-	right := DiameterOfBinaryTree(root.Right)
+	max := 0
+	Depth(root, &max)
+	fmt.Println("max ", max)
+	return max
+}
 
-	max := left + right
-	number = leetcode.Max(number, max)
+func Depth(root *TreeNode, maxDepth *int) int {
+	if root == nil {
+		return 0
+	}
 
-	return 1 + leetcode.Max(left, right)
+	left := Depth(root.Left, maxDepth)
+	right := Depth(root.Right, maxDepth)
+
+	*maxDepth = Max(*maxDepth, left+right)
+
+	return 1 + Max(left, right)
+}
+
+func Max(a, b int) int {
+	if a > b {
+		return a
+	}
+	return b
 }
 
 //层序遍历
@@ -217,6 +223,44 @@ func rightSideView(root *TreeNode) []int {
 
 		fmt.Println(level)
 		i += 1
+	}
+
+	return result
+}
+
+//前序遍历-递归解法
+func PreorderTraverseRecursive(root *TreeNode) []int {
+	result := make([]int, 0)
+	if root == nil {
+		return result
+	}
+
+	result = append(result, root.Value)
+	result = append(result, PreorderTraverseRecursive(root.Left)...)
+	result = append(result, PreorderTraverseRecursive(root.Right)...)
+
+	return result
+}
+
+func PreorderTraverse(root *TreeNode) []int {
+	result := make([]int, 0)
+	if root == nil {
+		return result
+	}
+
+	list := list2.New()
+	list.PushBack(root)
+
+	for list.Len() > 0 {
+		node := list.Remove(list.Back()).(*TreeNode)
+		result = append(result, node.Value)
+		if node.Right != nil {
+			list.PushBack(node.Right)
+		}
+
+		if node.Left != nil {
+			list.PushBack(node.Left)
+		}
 	}
 
 	return result
