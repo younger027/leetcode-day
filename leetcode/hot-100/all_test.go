@@ -39,3 +39,16 @@ func TestLongestPalindrome2(t *testing.T) {
 
 	t.Log(LongestPalindrome2("abbac"))
 }
+
+func TestMinPathSum(t *testing.T) {
+	//data := [][]int{
+	//	{1, 3, 1},
+	//	{1, 5, 1},
+	//	{4, 2, 1},
+	//}
+	//t.Log(minPathSum(data))
+	//
+	//t.Log(climbStairs(3))
+
+	t.Log(minDistance("intention", "execution"))
+}

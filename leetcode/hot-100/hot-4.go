@@ -83,6 +83,22 @@ func minNum(a, b int) int {
 	return a
 }
 
+func minNumThree(a, b, c int) int {
+	if a > b {
+		if c > b {
+			return b
+		} else {
+			return c
+		}
+	} else {
+		if c > a {
+			return a
+		} else {
+			return c
+		}
+	}
+}
+
 //解法二
 func FindMedianSortedArrays2(nums1 []int, nums2 []int) float64 {
 	m := len(nums1)
