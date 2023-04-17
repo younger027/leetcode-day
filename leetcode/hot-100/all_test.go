@@ -1,6 +1,8 @@
 package leetcode
 
-import "testing"
+import (
+	"testing"
+)
 
 func TestGroupAnagrams(t *testing.T) {
 	str := []string{"eat", "tea", "tan", "ate", "nat", "bat"}
@@ -51,4 +53,13 @@ func TestMinPathSum(t *testing.T) {
 	//t.Log(climbStairs(3))
 
 	t.Log(minDistance("intention", "execution"))
+}
+
+func TestSortColor(t *testing.T) {
+	//data := []int{2, 0, 2, 1, 1, 0}
+	//sortColors(data)
+	//fmt.Println(data)
+
+	data := []int{1, 2, 3}
+	t.Log(subsets(data))
 }
