@@ -49,6 +49,60 @@ func MaxDepth2(root *TreeNode) int {
 	return leetcode.Max(leftMax, rightMax) + 1
 }
 
+//111-二叉树的最小深度,递归法
+func minDepth(root *TreeNode) int {
+	if root == nil {
+		return 0
+	}
+
+	leftLen := minDepth(root.Left)
+	rightLen := minDepth(root.Right)
+
+	if root.Left == nil {
+		return 1 + rightLen
+	}
+
+	if root.Right == nil {
+		return 1 + leftLen
+	}
+
+	return 1 + Min(leftLen, rightLen)
+}
+
+//迭代法
+func minDepth2(root *TreeNode) int {
+	if root == nil {
+		return 0
+	}
+
+	nodeArray := make([]*TreeNode, 0)
+	nodeArray = append(nodeArray, root)
+
+	depthParams := 0
+	for len(nodeArray) > 0 {
+		size := len(nodeArray)
+		depthParams += 1
+		for i := 0; i < size; i++ {
+			node := nodeArray[0]
+			nodeArray = nodeArray[1:]
+
+			if node.Left != nil {
+				nodeArray = append(nodeArray, node.Left)
+			}
+
+			if node.Right != nil {
+				nodeArray = append(nodeArray, node.Right)
+			}
+
+			if node.Left == nil && node.Right == nil {
+				return depthParams
+			}
+		}
+	}
+
+	return depthParams
+}
+
 func InitBinaryTree(data []int, i int) *TreeNode {
 	if data[i] == -1 {
 		return nil
@@ -114,6 +168,13 @@ func Depth(root *TreeNode, maxDepth *int) int {
 
 func Max(a, b int) int {
 	if a > b {
+		return a
+	}
+	return b
+}
+
+func Min(a, b int) int {
+	if a < b {
 		return a
 	}
 	return b
@@ -523,4 +584,79 @@ func invertTree2(root *TreeNode) *TreeNode {
 	}
 
 	return root
+}
+
+//LeetCode：101. 对称二叉树
+func compare(left, right *TreeNode) bool {
+	//终止条件, // 首先排除空节点的情况
+	if left == nil && right != nil {
+		return false
+	} else if left != nil && right == nil {
+		return false
+	} else if left == nil && right == nil {
+		return true
+	} else if left.Value != right.Value {
+		// 排除了空节点，再排除数值不相同的情况
+		return false
+	}
+
+	// 此时就是：左右节点都不为空，且数值相同的情况
+	// 此时才做递归，做下一层的判断
+	outer := compare(left.Left, right.Right)
+	inner := compare(left.Right, right.Left)
+
+	return outer && inner
+}
+
+func isSymmetric(root *TreeNode) bool {
+	if root == nil {
+		return true
+	}
+	return compare(root.Left, root.Right)
+}
+
+//迭代法
+
+func isSymmetricFor(root *TreeNode) bool {
+	if root == nil {
+		return true
+	}
+
+	stack := make([]*TreeNode, 0)
+	stack = append(stack, root.Left)
+	stack = append(stack, root.Right)
+
+	for len(stack) > 0 {
+		left := stack[0]
+		stack = stack[1:]
+		right := stack[0]
+		stack = stack[1:]
+
+		if left == nil && right == nil {
+			continue
+		}
+
+		if left == nil && right != nil {
+			return false
+		} else if left != nil && right == nil {
+			return false
+		} else if left.Value != right.Value {
+			// 排除了空节点，再排除数值不相同的情况
+			return false
+		}
+
+		stack = append(stack, left.Left, right.Right)
+		stack = append(stack, left.Right, right.Left)
+
+	}
+
+	return true
+}
+
+//572. 另一棵树的子树
+func isSubtree(root *TreeNode, subRoot *TreeNode) bool {
+	if root == nil {
+		return false
+	}
+	return compare(root, subRoot) || isSubtree(root.Left, subRoot) || isSubtree(root.Right, subRoot)
 }

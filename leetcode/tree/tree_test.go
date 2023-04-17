@@ -24,7 +24,7 @@ func TestDiameterOfBinaryTree(t *testing.T) {
 }
 
 func TestPreorderTraverse(t *testing.T) {
-	data := []int{1, 2, 3, 6, 5, 9, 4}
+	data := []int{1, 2, 3, 4, 5, 5, 5}
 	root := InitBinaryTree(data, 0)
 	LevelTraverse(root)
 
@@ -39,6 +39,12 @@ func TestPreorderTraverse(t *testing.T) {
 
 	//t.Log(largestValues(root))
 
-	invertTree2(root)
-	LevelTraverse(root)
+	//invertTree2(root)
+	//LevelTraverse(root)
+
+	//t.Log(isSymmetricFor(root))
+	//t.Log(minDepth2(root))
+
+	t.Log(countNodes(root))
+	t.Log(countNodes2(root))
 }
