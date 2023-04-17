@@ -1,5 +1,7 @@
 package leetcode
 
+import "fmt"
+
 /*
 75. 颜色分类
 给定一个包含红色、白色和蓝色、共 n 个元素的数组 nums ，原地对它们进行排序，使得相同颜色的元素相邻，并按照红色、白色、蓝色顺序排列。
@@ -82,4 +84,34 @@ func BackTrack(nums []int, path *[]int, result *[][]int, start int) {
 		BackTrack(nums, path, result, i+1)
 		*path = (*path)[0 : len(*path)-1]
 	}
+}
+
+//定义全局变量，不采用指针传递的方式
+var (
+	result [][]int
+	path1  []int
+)
+
+func subsetss(nums []int) [][]int {
+	result = make([][]int, 0)
+	path1 = make([]int, 0)
+
+	BackTracks(nums, 0)
+	return result
+}
+
+func BackTracks(nums []int, start int) {
+	dst := make([]int, len(path1))
+	copy(dst, path1)
+	fmt.Println("dst:", dst)
+
+	result = append(result, dst)
+
+	for i := start; i < len(nums); i++ {
+		path1 = append(path1, nums[i])
+		BackTracks(nums, i+1)
+		path1 = path1[0 : len(path1)-1]
+	}
+
+	fmt.Println("result:", result)
 }
