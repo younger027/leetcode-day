@@ -1,6 +1,9 @@
 package leetcode
 
-import "fmt"
+import (
+	"fmt"
+	"sort"
+)
 
 /*
 75. 颜色分类
@@ -115,3 +118,60 @@ func BackTracks(nums []int, start int) {
 
 	fmt.Println("result:", result)
 }
+
+/*
+90. 子集 II
+给你一个整数数组 nums ，其中可能包含重复元素，请你返回该数组所有可能的子集（幂集）。
+解集 不能 包含重复的子集。返回的解集中，子集可以按 任意顺序 排列。
+
+示例 1：
+输入：nums = [1,2,2]
+输出：[[],[1],[1,2],[1,2,2],[2],[2,2]]
+示例 2：
+输入：nums = [0]
+输出：[[],[0]]
+
+提示：
+1 <= nums.length <= 10
+-10 <= nums[i] <= 10*/
+
+func subsetsWithDup(nums []int) [][]int {
+	result = make([][]int, 0)
+	path = make([]int, 0)
+
+	sort.Ints(nums)
+	subsetsWithDupDFS(nums, 0)
+
+	return result
+}
+
+func subsetsWithDupDFS(nums []int, start int) {
+	//回溯法
+	//结束条件，i-1, i相同
+	dst := make([]int, len(path))
+	copy(dst, path)
+	fmt.Println("dst:", dst)
+
+	result = append(result, dst)
+
+	for i := start; i < len(nums); i++ {
+		if i > start && nums[i] == nums[i-1] {
+			continue
+		}
+
+		path = append(path, nums[i])
+		subsetsWithDupDFS(nums, i+1)
+		path = path[0 : len(path)-1]
+
+	}
+}
+
+/*
+79. 单词搜索
+中等
+1.6K
+相关企业
+给定一个 m x n 二维字符网格 board 和一个字符串单词 word 。如果 word 存在于网格中，返回 true ；否则，返回 false 。
+
+单词必须按照字母顺序，通过相邻的单元格内的字母构成，其中“相邻”单元格是那些水平相邻或垂直相邻的单元格。同一个单元格内的字母不允许被重复使用。
+*/

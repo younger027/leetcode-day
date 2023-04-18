@@ -69,32 +69,78 @@ func dfsCombination(candidates []int, begin, target int, result *[][]int, path *
 	}
 
 }
+
 // 主要在于递归中传递下一个数字
 var (
-	res [][]int
-	path  []int
+	res  [][]int
+	path []int
 )
+
 func combinationSum(candidates []int, target int) [][]int {
 	res, path = make([][]int, 0), make([]int, 0, len(candidates))
-	sort.Ints(candidates)   // 排序，为剪枝做准备
+	sort.Ints(candidates) // 排序，为剪枝做准备
 	dfsd(candidates, 0, target)
 	return res
 }
 
 func dfsd(candidates []int, start int, target int) {
-	if target == 0 {   // target 不断减小，如果为0说明达到了目标值
+	if target == 0 { // target 不断减小，如果为0说明达到了目标值
 		tmp := make([]int, len(path))
 		copy(tmp, path)
 		res = append(res, tmp)
 		return
 	}
 	for i := start; i < len(candidates); i++ {
-		if candidates[i] > target {  // 剪枝，提前返回
+		if candidates[i] > target { // 剪枝，提前返回
 			break
 		}
 		path = append(path, candidates[i])
-		dfsd(candidates, i, target - candidates[i])
-		path = path[:len(path) - 1]
+		dfsd(candidates, i, target-candidates[i])
+		path = path[:len(path)-1]
 	}
 }
 
+/*
+79. 单词搜索
+给定一个 m x n 二维字符网格 board 和一个字符串单词 word 。如果 word 存在于网格中，返回 true ；否则，返回 false 。
+单词必须按照字母顺序，通过相邻的单元格内的字母构成，其中“相邻”单元格是那些水平相邻或垂直相邻的单元格。同一个单元格内的字母不允许被重复使用。
+*/
+func exist(board [][]byte, word string) bool {
+	m := len(board)
+	n := len(board[0])
+
+	visit := make([][]bool, m)
+	for i := 0; i < m; i++ {
+		visit[i] = make([]bool, n)
+	}
+
+	for i := 0; i < m; i++ {
+		for j := 0; j < n; j++ {
+			if existDFS(board, i, j, m, n, word, 0, &visit) {
+				return true
+			}
+		}
+	}
+
+	return false
+}
+
+func existDFS(board [][]byte, i, j, m, n int, word string, index int, visit *[][]bool) bool {
+	if index == len(word) {
+		return true
+	}
+
+	if i < 0 || i >= m || j < 0 || j >= n || board[i][j] != word[index] || (*visit)[i][j] {
+		return false
+	}
+
+	(*visit)[i][j] = true
+	isExist := existDFS(board, i-1, j, m, n, word, index+1, visit) ||
+		existDFS(board, i+1, j, m, n, word, index+1, visit) ||
+		existDFS(board, i, j-1, m, n, word, index+1, visit) ||
+		existDFS(board, i, j+1, m, n, word, index+1, visit)
+
+	(*visit)[i][j] = false
+	return isExist
+
+}

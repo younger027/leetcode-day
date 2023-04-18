@@ -60,6 +60,17 @@ func TestSortColor(t *testing.T) {
 	//sortColors(data)
 	//fmt.Println(data)
 
-	data := []int{1, 2, 3}
-	t.Log(subsets(data))
+	//data := []int{1, 2, 3}
+	//t.Log(subsets(data))
+
+	//data := []int{1, 2, 2}
+	//t.Log(subsetsWithDup(data))
+
+	data := [][]byte{
+		{'A', 'B', 'C', 'E'},
+		{'S', 'F', 'C', 'S'},
+		{'A', 'D', 'E', 'E'},
+	}
+	word := "ABCCE"
+	t.Log(exist(data, word))
 }
