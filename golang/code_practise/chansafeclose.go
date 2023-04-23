@@ -160,9 +160,9 @@ func SafeCloseChanMSender() {
 		go func() {
 			defer wg.Done()
 
-			for value := range dataCh {
-				//log.Println(value)
-				result = append(result, value)
+			for Val := range dataCh {
+				//log.Println(Val)
+				result = append(result, Val)
 			}
 
 		}()

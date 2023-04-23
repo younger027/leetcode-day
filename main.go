@@ -45,8 +45,8 @@ func main() {
 	for i := 0; i < NumSenders; i++ {
 		go func(id string) {
 			for {
-				value := rand.Intn(MaxRandomNumber)
-				if value == 0 {
+				Val := rand.Intn(MaxRandomNumber)
+				if Val == 0 {
 					// here, a trick is used to notify the moderator
 					// to close the additional signal channel.
 					select {
@@ -67,7 +67,7 @@ func main() {
 				select {
 				case <-stopCh:
 					return
-				case dataCh <- value:
+				case dataCh <- Val:
 				}
 			}
 		}(strconv.Itoa(i))
@@ -80,9 +80,9 @@ func main() {
 
 			for {
 				select {
-				case value := <-dataCh:
+				case Val := <-dataCh:
 					//do something
-					log.Println(value)
+					log.Println(Val)
 				default:
 				}
 
@@ -97,8 +97,8 @@ func main() {
 				select {
 				case <-stopCh:
 					return
-				case value := <-dataCh:
-					if value == MaxRandomNumber-1 {
+				case Val := <-dataCh:
+					if Val == MaxRandomNumber-1 {
 						// the same trick is used to notify the moderator
 						// to close the additional signal channel.
 						select {
@@ -108,7 +108,7 @@ func main() {
 						return
 					}
 
-					log.Println(value)
+					log.Println(Val)
 				}
 			}
 		}(strconv.Itoa(i))

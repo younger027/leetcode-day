@@ -74,3 +74,8 @@ func TestSortColor(t *testing.T) {
 	word := "ABCCE"
 	t.Log(exist(data, word))
 }
+
+func TestNumTrees(t *testing.T) {
+	//t.Log(numTrees(3))
+	t.Log(longestConsecutive([]int{100, 4, 200, 1, 3, 2}))
+}

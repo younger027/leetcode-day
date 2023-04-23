@@ -12,7 +12,7 @@ func TestMergeTwoLists(t *testing.T) {
 	//ret := MergeTwoLists(l1, l2)
 	ret := NonRecursiveMergeTwoList(l1, l2)
 	for ret != nil {
-		fmt.Println("node.value:", ret.Val)
+		fmt.Println("node.Val:", ret.Val)
 		ret = ret.Next
 	}
 }

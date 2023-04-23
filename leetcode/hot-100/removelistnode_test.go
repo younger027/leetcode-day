@@ -41,7 +41,7 @@ func TestRemoveListNode(t *testing.T) {
 	newNode := RemoveNthFromEnd(node, 1)
 
 	for newNode != nil {
-		fmt.Println("node.value:", newNode.Val)
+		fmt.Println("node.Val:", newNode.Val)
 		newNode = newNode.Next
 	}
 }

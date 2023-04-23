@@ -14,7 +14,7 @@ func TestRemoveElement(t *testing.T) {
 	MoveZeroes(array)
 
 	for i := 0; i < len(array); i++ {
-		fmt.Println("node value---", array[i])
+		fmt.Println("node Val---", array[i])
 	}
 }
 

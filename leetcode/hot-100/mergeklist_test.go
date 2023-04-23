@@ -18,7 +18,7 @@ func TestMergeKLists(t *testing.T) {
 	arrayNode := []*ListNode{l1, l2, l3}
 	ret := MergeKLists(arrayNode)
 	for ret != nil {
-		fmt.Println("node.value:", ret.Val)
+		fmt.Println("node.Val:", ret.Val)
 		ret = ret.Next
 	}
 }

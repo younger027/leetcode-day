@@ -145,7 +145,7 @@ func GenerateMatrix(n int) [][]int {
 	leftDown := 0      //左边界
 	rightUp := n - 1   //右边界
 	rightDown := n - 1 //下边界
-	value := 1
+	Val := 1
 
 	//init result matrix
 	result := make([][]int, n)
@@ -153,35 +153,35 @@ func GenerateMatrix(n int) [][]int {
 		result[i] = make([]int, n)
 	}
 
-	for value <= n*n {
+	for Val <= n*n {
 		if leftUp <= rightDown {
 			for i := leftDown; i <= rightUp; i++ {
-				result[leftUp][i] = value
-				value += 1
+				result[leftUp][i] = Val
+				Val += 1
 			}
 			leftUp += 1
 		}
 
 		if leftDown <= rightUp {
 			for i := leftUp; i <= rightDown; i++ {
-				result[i][rightUp] = value
-				value += 1
+				result[i][rightUp] = Val
+				Val += 1
 			}
 			rightUp -= 1
 		}
 
 		if leftUp <= rightDown {
 			for i := rightUp; i >= leftDown; i-- {
-				result[rightDown][i] = value
-				value += 1
+				result[rightDown][i] = Val
+				Val += 1
 			}
 			rightDown -= 1
 		}
 
 		if leftDown <= rightUp {
 			for i := rightDown; i >= leftUp; i-- {
-				result[i][leftDown] = value
-				value += 1
+				result[i][leftDown] = Val
+				Val += 1
 			}
 			leftDown += 1
 		}

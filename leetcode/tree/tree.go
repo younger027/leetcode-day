@@ -8,7 +8,7 @@ import (
 )
 
 type TreeNode struct {
-	Value int
+	Val   int
 	Left  *TreeNode
 	Right *TreeNode
 }
@@ -109,7 +109,7 @@ func InitBinaryTree(data []int, i int) *TreeNode {
 	}
 
 	root := &TreeNode{
-		Value: data[i],
+		Val:   data[i],
 		Left:  nil,
 		Right: nil,
 	}
@@ -191,11 +191,11 @@ func LevelTraverse(root *TreeNode) [][]int {
 	nodeArray = append(nodeArray, root)
 	i := 0
 	for len(nodeArray) > 0 {
-		level := fmt.Sprintf("level %d, value:", i)
+		level := fmt.Sprintf("level %d, Val:", i)
 		levelResult := make([]int, 0)
 		for _, tNode := range nodeArray {
-			level += fmt.Sprintf("%d", tNode.Value)
-			levelResult = append(levelResult, tNode.Value)
+			level += fmt.Sprintf("%d", tNode.Val)
+			levelResult = append(levelResult, tNode.Val)
 			node := nodeArray[0]
 			nodeArray = nodeArray[1:]
 			if node.Left != nil {
@@ -226,11 +226,11 @@ func levelOrderBottom(root *TreeNode) [][]int {
 	nodeArray = append(nodeArray, root)
 	i := 0
 	for len(nodeArray) > 0 {
-		level := fmt.Sprintf("level %d, value:", i)
+		level := fmt.Sprintf("level %d, Val:", i)
 		levelResult := make([]int, 0)
 		for _, tNode := range nodeArray {
-			level += fmt.Sprintf("%d", tNode.Value)
-			levelResult = append(levelResult, tNode.Value)
+			level += fmt.Sprintf("%d", tNode.Val)
+			levelResult = append(levelResult, tNode.Val)
 			node := nodeArray[0]
 			nodeArray = nodeArray[1:]
 			if node.Left != nil {
@@ -264,7 +264,7 @@ func rightSideView(root *TreeNode) []int {
 	nodeArray = append(nodeArray, root)
 	i := 0
 	for len(nodeArray) > 0 {
-		result = append(result, nodeArray[len(nodeArray)-1].Value)
+		result = append(result, nodeArray[len(nodeArray)-1].Val)
 
 		for i := range nodeArray {
 			fmt.Println(i)
@@ -293,7 +293,7 @@ func PreorderTraverseRecursive(root *TreeNode) []int {
 		return result
 	}
 
-	result = append(result, root.Value)
+	result = append(result, root.Val)
 	result = append(result, PreorderTraverseRecursive(root.Left)...)
 	result = append(result, PreorderTraverseRecursive(root.Right)...)
 
@@ -311,7 +311,7 @@ func PreorderTraverse(root *TreeNode) []int {
 
 	for list.Len() > 0 {
 		node := list.Remove(list.Back()).(*TreeNode)
-		result = append(result, node.Value)
+		result = append(result, node.Val)
 		if node.Right != nil {
 			list.PushBack(node.Right)
 		}
@@ -332,7 +332,7 @@ func MiddleTraverseRecursive(root *TreeNode) []int {
 	}
 
 	result = append(result, MiddleTraverseRecursive(root.Left)...)
-	result = append(result, root.Value)
+	result = append(result, root.Val)
 	result = append(result, MiddleTraverseRecursive(root.Right)...)
 
 	return result
@@ -353,8 +353,8 @@ func MiddleTraverse(root *TreeNode) []int {
 			root = root.Left
 		} else {
 			root = stack.Remove(stack.Back()).(*TreeNode)
-			fmt.Println("node---", root.Value)
-			result = append(result, root.Value)
+			fmt.Println("node---", root.Val)
+			result = append(result, root.Val)
 			root = root.Right
 
 		}
@@ -372,7 +372,7 @@ func PostTraverseRecursive(root *TreeNode) []int {
 
 	result = append(result, PostTraverseRecursive(root.Left)...)
 	result = append(result, PostTraverseRecursive(root.Right)...)
-	result = append(result, root.Value)
+	result = append(result, root.Val)
 
 	return result
 }
@@ -387,7 +387,7 @@ func PostTraverseTraverse(root *TreeNode) []int {
 	stack.PushBack(root)
 	for stack.Len() > 0 {
 		root = stack.Remove(stack.Back()).(*TreeNode)
-		result = append(result, root.Value)
+		result = append(result, root.Val)
 		if root.Left != nil {
 			stack.PushBack(root.Left)
 		}
@@ -423,7 +423,7 @@ func averageOfLevels(root *TreeNode) []float64 {
 			tail := levelArray[0]
 			levelArray = levelArray[1:]
 
-			levelTotal += tail.Value
+			levelTotal += tail.Val
 			if tail.Left != nil {
 				levelArray = append(levelArray, tail.Left)
 			}
@@ -479,7 +479,7 @@ func levelOrder(root *Node) [][]int {
 }
 
 //515. 在每个树行中找最大值
-func largestValues(root *TreeNode) []int {
+func largestVals(root *TreeNode) []int {
 	result := make([]int, 0)
 	if root == nil {
 		return result
@@ -493,8 +493,8 @@ func largestValues(root *TreeNode) []int {
 		for i := 0; i < sz; i++ {
 			node := levelArray[0]
 			levelArray = levelArray[1:]
-			if node.Value > max {
-				max = node.Value
+			if node.Val > max {
+				max = node.Val
 			}
 			if node.Left != nil {
 				levelArray = append(levelArray, node.Left)
@@ -595,7 +595,7 @@ func compare(left, right *TreeNode) bool {
 		return false
 	} else if left == nil && right == nil {
 		return true
-	} else if left.Value != right.Value {
+	} else if left.Val != right.Val {
 		// 排除了空节点，再排除数值不相同的情况
 		return false
 	}
@@ -640,7 +640,7 @@ func isSymmetricFor(root *TreeNode) bool {
 			return false
 		} else if left != nil && right == nil {
 			return false
-		} else if left.Value != right.Value {
+		} else if left.Val != right.Val {
 			// 排除了空节点，再排除数值不相同的情况
 			return false
 		}
@@ -659,4 +659,74 @@ func isSubtree(root *TreeNode, subRoot *TreeNode) bool {
 		return false
 	}
 	return compare(root, subRoot) || isSubtree(root.Left, subRoot) || isSubtree(root.Right, subRoot)
+}
+
+/*
+121. 买卖股票的最佳时机
+简单
+给定一个数组 prices ，它的第 i 个元素 prices[i] 表示一支给定股票第 i 天的价格。
+你只能选择 某一天 买入这只股票，并选择在 未来的某一个不同的日子 卖出该股票。设计一个算法来计算你所能获取的最大利润。
+返回你可以从这笔交易中获取的最大利润。如果你不能获取任何利润，返回 0 。
+
+示例 1：
+输入：[7,1,5,3,6,4]
+输出：5
+解释：在第 2 天（股票价格 = 1）的时候买入，在第 5 天（股票价格 = 6）的时候卖出，最大利润 = 6-1 = 5 。
+     注意利润不能是 7-1 = 6, 因为卖出价格需要大于买入价格；同时，你不能在买入前卖出股票。
+示例 2：
+
+输入：prices = [7,6,4,3,1]
+输出：0
+解释：在这种情况下, 没有交易完成, 所以最大利润为 0。
+*/
+
+func maxProfit(prices []int) int {
+	if len(prices) == 0 {
+		return 0
+	}
+
+	low := math.MaxInt32
+	result := 0
+	for i := 0; i < len(prices); i++ {
+		low = Min(low, prices[i])
+		result = Max(result, prices[i]-low)
+	}
+
+	return result
+}
+
+/*
+124. 二叉树中的最大路径和
+困难
+二叉树中的 路径 被定义为一条节点序列，序列中每对相邻节点之间都存在一条边。同一个节点在一条路径序列中 至多出现一次 。该路径 至少包含一个 节点，且不一定经过根节点。
+路径和 是路径中各节点值的总和。
+给你一个二叉树的根节点 root ，返回其 最大路径和 。
+*/
+
+func maxPathSum(root *TreeNode) int {
+	maxSum := math.MinInt32
+
+	var dfs func(root *TreeNode) int
+	dfs = func(root *TreeNode) int {
+		if root == nil {
+			return 0
+		}
+		left := dfs(root.Left)
+		right := dfs(root.Right)
+
+		innerMaxSum := left + root.Val + right
+		maxSum = max(maxSum, innerMaxSum)
+		outputMaxSum := root.Val + max(left, right) // left,right都是非负的，就不用和0比较了
+		return max(outputMaxSum, 0)
+	}
+
+	dfs(root)
+	return maxSum
+}
+
+func max(a, b int) int {
+	if a > b {
+		return a
+	}
+	return b
 }

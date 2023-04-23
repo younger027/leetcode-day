@@ -77,7 +77,7 @@ var SHARD_COUNT = 32
 //	return m[uint(fnv32(key))%uint(SHARD_COUNT)]
 //}
 //
-//func (c *ConcurrentMap[V]) Store(key string, value V) {
+//func (c *ConcurrentMap[V]) Store(key string, Val V) {
 //
 //}
 //
