@@ -1,8 +1,10 @@
 package leetcode
 
 import (
+	"bytes"
 	"fmt"
 	"math"
+	"strings"
 )
 
 /*
@@ -173,8 +175,6 @@ func longestConsecutive(nums []int) int {
 		maxMap[nums[i]] = true
 	}
 
-	//dp[i] 代表以i数字开始的最长连续序列长度
-	//dp[i]= maxMap[i-1] >0 ?maxMap+1, 1
 	for _, number := range nums {
 		if !maxMap[number-1] {
 			curNum := number
@@ -191,4 +191,77 @@ func longestConsecutive(nums []int) int {
 	}
 
 	return max
+}
+
+/*
+136. 只出现一次的数字
+简单
+给你一个 非空 整数数组nums ，除了某个元素只出现一次以外，其余每个元素均出现两次。找出那个只出现了一次的元素。
+你必须设计并实现线性时间复杂度的算法来解决此问题，且该算法只使用常量额外空间。
+*/
+
+func singleNumber(nums []int) int {
+	if len(nums) == 0 {
+		return 0
+	}
+
+	ans := nums[0]
+	for i := 1; i < len(nums); i++ {
+		ans = ans ^ nums[i]
+	}
+
+	return ans
+}
+
+/*
+139. 单词拆分
+中等
+给你一个字符串 s 和一个字符串列表 wordDict 作为字典。请你判断是否可以利用字典中出现的单词拼接出 s 。
+注意：不要求字典中出现的单词全部都使用，并且字典中的单词可以重复使用。
+
+示例 1：
+输入: s = "leetcode", wordDict = ["leet", "code"]
+输出: true
+解释: 返回 true 因为 "leetcode" 可以由 "leet" 和 "code" 拼接成
+*/
+
+//write self, timeout
+func wordBreak(s string, wordDict []string) bool {
+	return moveWord(s, "", wordDict)
+}
+
+func moveWord(s, cur string, wordDict []string) bool {
+	if len(cur) > len(s) {
+		return false
+	}
+
+	if s == cur {
+		return true
+	}
+
+	for _, word := range wordDict {
+		left, right := false, false
+		var b bytes.Buffer
+		b.WriteString(cur)
+		b.WriteString(word)
+		newRCur := b.String()
+		b.Reset()
+
+		b.WriteString(word)
+		b.WriteString(cur)
+		newLCur := b.String()
+		if strings.Contains(s, newRCur) {
+			right = moveWord(s, newRCur, wordDict)
+		}
+		if strings.Contains(s, newLCur) {
+			left = moveWord(s, newLCur, wordDict)
+		}
+
+		if left || right {
+			return true
+		}
+
+	}
+
+	return false
 }

@@ -77,5 +77,11 @@ func TestSortColor(t *testing.T) {
 
 func TestNumTrees(t *testing.T) {
 	//t.Log(numTrees(3))
-	t.Log(longestConsecutive([]int{100, 4, 200, 1, 3, 2}))
+	//t.Log(longestConsecutive([]int{100, 4, 200, 1, 3, 2}))
+
+	//t.Log(singleNumber([]int{3, 4, 4, 3, 2}))
+
+	s := "catsandog"
+	wordDict := []string{"cats", "dog", "sand", "and", "cat"}
+	t.Log(moveWord(s, "", wordDict))
 }
