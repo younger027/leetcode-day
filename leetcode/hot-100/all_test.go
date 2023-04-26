@@ -82,6 +82,6 @@ func TestNumTrees(t *testing.T) {
 	//t.Log(singleNumber([]int{3, 4, 4, 3, 2}))
 
 	s := "catsandog"
-	wordDict := []string{"cats", "dog", "sand", "and", "cat"}
-	t.Log(moveWord(s, "", wordDict))
+	wordDict := []string{"cat", "dog", "san", "and", "cat"}
+	t.Log(wordBreakDp(s, wordDict))
 }

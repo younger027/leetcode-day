@@ -265,3 +265,62 @@ func moveWord(s, cur string, wordDict []string) bool {
 
 	return false
 }
+
+//动态规划
+func wordBreakDp(s string, wordDict []string) bool {
+	//dp[i] 标识s的前i位可以有worddict中的单词拼接
+
+	length := len(s)
+	wbDp := make([]bool, length+1)
+
+	wbDp[0] = true
+
+	for i := 0; i < length; i++ {
+		for j := i + 1; j < length+1; j++ {
+			if wbDp[i] && FinfSubStr(s[i:j], wordDict) {
+				wbDp[j] = true
+			}
+		}
+	}
+
+	fmt.Println(wbDp)
+	return wbDp[length]
+}
+
+func FinfSubStr(s string, wordDict []string) bool {
+	for _, str := range wordDict {
+		if str == s {
+			return true
+		}
+	}
+
+	return false
+}
+
+/**
+ * Definition for singly-linked list.
+ * type ListNode struct {
+ *     Val int
+ *     Next *ListNode
+ * }
+ */
+
+func hasCycle(head *ListNode) bool {
+	if head == nil {
+		return false
+	}
+
+	slow := head
+	quick := head
+
+	for quick != nil && quick.Next != nil {
+		slow = slow.Next
+		quick = quick.Next.Next
+
+		if quick == slow {
+			return true
+		}
+	}
+
+	return false
+}
