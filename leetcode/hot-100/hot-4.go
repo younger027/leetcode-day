@@ -277,7 +277,7 @@ func wordBreakDp(s string, wordDict []string) bool {
 
 	for i := 0; i < length; i++ {
 		for j := i + 1; j < length+1; j++ {
-			if wbDp[i] && FinfSubStr(s[i:j], wordDict) {
+			if wbDp[i] && FindSubStr(s[i:j], wordDict) {
 				wbDp[j] = true
 			}
 		}
@@ -287,7 +287,7 @@ func wordBreakDp(s string, wordDict []string) bool {
 	return wbDp[length]
 }
 
-func FinfSubStr(s string, wordDict []string) bool {
+func FindSubStr(s string, wordDict []string) bool {
 	for _, str := range wordDict {
 		if str == s {
 			return true
@@ -324,3 +324,46 @@ func hasCycle(head *ListNode) bool {
 
 	return false
 }
+
+//142. 环形链表 II
+
+func detectCycle(head *ListNode) *ListNode {
+	slow := head
+	fast := head
+
+	for {
+		if fast == nil || fast.Next == nil {
+			return nil
+		}
+		slow = slow.Next
+		fast = fast.Next.Next
+
+		if slow == fast {
+			break
+		}
+
+	}
+
+	fast = head
+	for fast != slow {
+		fast = fast.Next
+		slow = slow.Next
+	}
+	return slow
+}
+
+//146 lru缓存
+//type LRUCache struct {
+//}
+//
+//func Constructor(capacity int) LRUCache {
+//
+//}
+//
+//func (this *LRUCache) Get(key int) int {
+//
+//}
+//
+//func (this *LRUCache) Put(key int, value int) {
+//
+//}

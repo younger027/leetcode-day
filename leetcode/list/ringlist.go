@@ -33,12 +33,19 @@ func RingIntersectionNode(node *ListNode) *ListNode {
 		quick = quick.Next.Next
 
 		if quick == slow {
-			return quick
+			break
 
 		}
 	}
 
-	return nil
+	quick = node
+
+	for quick != slow {
+		quick = quick.Next
+		slow = slow.Next
+	}
+
+	return slow
 }
 
 func RingLength(node *ListNode) int {

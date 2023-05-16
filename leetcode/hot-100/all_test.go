@@ -85,3 +85,17 @@ func TestNumTrees(t *testing.T) {
 	wordDict := []string{"cat", "dog", "san", "and", "cat"}
 	t.Log(wordBreakDp(s, wordDict))
 }
+
+func TestDetectCycle(t *testing.T) {
+	//l1 := InitListNode([]int{1, 2})
+	//
+	//head := l1
+	//l1.Next.Next = head
+	//
+	//t.Log(detectCycle(head).Val)
+
+	//t.Log(combine(4, 2))
+	//t.Log(combinationSum3(3, 9))
+
+	t.Log(CombinationSum2([]int{2, 3, 6, 7}, 7))
+}

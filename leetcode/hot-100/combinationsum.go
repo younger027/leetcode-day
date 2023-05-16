@@ -70,6 +70,38 @@ func dfsCombination(candidates []int, begin, target int, result *[][]int, path *
 
 }
 
+//重刷
+func CombinationSum2(candidates []int, target int) [][]int {
+	var result [][]int
+	var path []int
+
+	sort.Ints(candidates)
+	CombinationSum2BT(candidates, target, 0, &result, &path)
+
+	return result
+}
+
+func CombinationSum2BT(candidates []int, target, startIndex int, result *[][]int, path *[]int) {
+	if target < 0 {
+		return
+	}
+
+	if target == 0 {
+		temp := make([]int, len(*path))
+		copy(temp, *path)
+		*result = append(*result, temp)
+		return
+	}
+
+	for i := startIndex; i < len(candidates); i++ {
+		target = target - candidates[i]
+		*path = append(*path, candidates[i])
+		CombinationSum2BT(candidates, target, i, result, path)
+		target = target + candidates[i]
+		*path = (*path)[:len(*path)-1]
+	}
+}
+
 // 主要在于递归中传递下一个数字
 var (
 	res  [][]int
@@ -143,4 +175,99 @@ func existDFS(board [][]byte, i, j, m, n int, word string, index int, visit *[][
 	(*visit)[i][j] = false
 	return isExist
 
+}
+
+/*
+77. 组合
+中等
+1.4K
+相关企业
+给定两个整数 n 和 k，返回范围 [1, n] 中所有可能的 k 个数的组合。
+
+你可以按 任何顺序 返回答案。
+输入：n = 4, k = 2
+输出：
+[
+  [2,4],
+  [3,4],
+  [2,3],
+  [1,2],
+  [1,3],
+  [1,4],
+]
+*/
+
+func combine(n int, k int) [][]int {
+	result := make([][]int, 0)
+	path := make([]int, 0, k)
+
+	BackTrace(n, k, 1, &result, &path)
+
+	return result
+}
+
+func BackTrace(n int, k int, startIndex int, result *[][]int, path *[]int) {
+	if len(*path) == k {
+		temp := make([]int, len(*path))
+		copy(temp, *path)
+		*result = append(*result, temp)
+		return
+	}
+
+	for i := startIndex; i <= n; i++ {
+		if k-len(*path) > n-i+1 {
+			break
+		}
+		*path = append(*path, i)
+		BackTrace(n, k, i+1, result, path)
+		*path = (*path)[:len(*path)-1]
+	}
+}
+
+/*
+216. 组合总和 III
+中等
+找出所有相加之和为 n 的 k 个数的组合，且满足下列条件：
+只使用数字1到9
+每个数字 最多使用一次
+返回 所有可能的有效组合的列表 。该列表不能包含相同的组合两次，组合可以以任何顺序返回。
+
+示例 1:
+输入: k = 3, n = 7
+输出: [[1,2,4]]
+解释:
+1 + 2 + 4 = 7
+没有其他符合的组合了。
+*/
+
+func combinationSum3(k int, n int) [][]int {
+	result := make([][]int, 0)
+	path := make([]int, 0, k)
+
+	BackTrace3(n, k, 1, &result, &path)
+
+	return result
+}
+
+func BackTrace3(sum int, k int, startIndex int, result *[][]int, path *[]int) {
+	if len(*path) > k {
+		return
+	}
+	if len(*path) == k && sum == 0 {
+		temp := make([]int, len(*path))
+		copy(temp, *path)
+		*result = append(*result, temp)
+		return
+	}
+
+	for i := startIndex; i <= 9; i++ {
+		if sum-i < 0 {
+			break
+		}
+		sum = sum - i
+		*path = append(*path, i)
+		BackTrace3(sum, k, i+1, result, path)
+		*path = (*path)[:len(*path)-1]
+		sum = sum + i
+	}
 }
