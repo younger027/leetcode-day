@@ -97,5 +97,8 @@ func TestDetectCycle(t *testing.T) {
 	//t.Log(combine(4, 2))
 	//t.Log(combinationSum3(3, 9))
 
-	t.Log(CombinationSum2([]int{2, 3, 6, 7}, 7))
+	//t.Log(CombinationSum2([]int{2, 3, 6, 7}, 7))
+
+	//t.Log(partition("aab"))
+	t.Log(restoreIpAddresses("0000"))
 }

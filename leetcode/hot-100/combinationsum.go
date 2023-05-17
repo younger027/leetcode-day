@@ -1,6 +1,10 @@
 package leetcode
 
-import "sort"
+import (
+	"sort"
+	"strconv"
+	"strings"
+)
 
 /*
 39. 组合总和
@@ -269,5 +273,104 @@ func BackTrace3(sum int, k int, startIndex int, result *[][]int, path *[]int) {
 		BackTrace3(sum, k, i+1, result, path)
 		*path = (*path)[:len(*path)-1]
 		sum = sum + i
+	}
+}
+
+/*
+131. 分割回文串
+中等
+相关企业
+给你一个字符串 s，请你将 s 分割成一些子串，使每个子串都是 回文串 。返回 s 所有可能的分割方案。
+
+回文串 是正着读和反着读都一样的字符串。
+
+示例 1：
+输入：s = "aab"
+输出：[["a","a","b"],["aa","b"]]
+*/
+func partition(s string) [][]string {
+	var result [][]string
+	var path []string
+	partitionBackTrace(s, 0, &result, &path)
+
+	return result
+
+}
+
+func partitionBackTrace(s string, startIndex int, result *[][]string, path *[]string) {
+	if startIndex == len(s) {
+		temp := make([]string, len(*path))
+		copy(temp, *path)
+		*result = append(*result, temp)
+		return
+	}
+
+	for i := startIndex; i < len(s); i++ {
+		curStr := s[startIndex : i+1]
+		if VaildStr(curStr) {
+			*path = append(*path, curStr)
+			partitionBackTrace(s, i+1, result, path)
+			*path = (*path)[:len(*path)-1]
+		}
+	}
+}
+
+func VaildStr(s string) bool {
+	i := 0
+	j := len(s) - 1
+	for i <= j {
+		if s[i] != s[j] {
+			return false
+		}
+		i++
+		j--
+	}
+
+	return true
+}
+
+/*
+93. 复原 IP 地址
+中等
+有效 IP 地址 正好由四个整数（每个整数位于 0 到 255 之间组成，且不能含有前导 0），整数之间用 '.' 分隔。
+
+例如："0.1.2.201" 和 "192.168.1.1" 是 有效 IP 地址，但是 "0.011.255.245"、"192.168.1.312" 和 "192.168@1.1" 是 无效 IP 地址。
+给定一个只包含数字的字符串 s ，用以表示一个 IP 地址，返回所有可能的有效 IP 地址，这些地址可以通过在 s 中插入 '.' 来形成。你 不能 重新排序或删除 s 中的任何数字。你可以按 任何 顺序返回答案。
+
+示例 1：
+输入：s = "25525511135"
+输出：["255.255.11.135","255.255.111.35"]
+*/
+
+func restoreIpAddresses(s string) []string {
+	var result []string
+	var path []string
+	restoreIpAddressesBackTrace(s, 0, &result, &path)
+
+	return result
+
+}
+
+func restoreIpAddressesBackTrace(s string, startIndex int, result, path *[]string) {
+	if 4 == len(*path) && startIndex == len(s) {
+		temp := strings.Join(*path, ".")
+		*result = append(*result, temp)
+		return
+	}
+
+	for i := startIndex; i < len(s); i++ {
+		if i != startIndex && s[startIndex] == '0' { // 含有前导 0，无效
+			break
+		}
+
+		str := s[startIndex : i+1]
+		num, _ := strconv.Atoi(str)
+		if num >= 0 && num <= 255 {
+			*path = append(*path, str) // 符合条件的就进入下一层
+			restoreIpAddressesBackTrace(s, i+1, result, path)
+			*path = (*path)[:len(*path)-1]
+		} else { // 如果不满足条件，再往后也不可能满足条件，直接退出
+			break
+		}
 	}
 }
