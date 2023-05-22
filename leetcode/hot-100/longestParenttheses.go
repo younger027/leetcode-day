@@ -34,7 +34,7 @@ Output: 0
 
 需要注意的是，如果一开始栈为空，第一个字符为左括号的时候我们会将其放入栈中，这样就不满足提及的「最后一个没有被匹配的右括号的下标」，
 为了保持统一，我们在一开始的时候往栈中放入一个值为−1的元素
-
+)()())
 */
 func longestValidParentheses(s string) int {
 	if len(s) <= 1 {
@@ -123,4 +123,29 @@ func Max(a, b int) int {
 		return a
 	}
 	return b
+}
+
+//2023-4-13 )()())
+func longestValidParenthesesReview(s string) int {
+	if len(s) <= 1 {
+		return 0
+	}
+
+	max := 0
+	stack := []int{-1}
+
+	for i, c := range s {
+		if c == '(' {
+			stack = append(stack, i)
+		} else {
+			stack = stack[:len(stack)-1]
+			if len(stack) == 0 {
+				stack = append(stack, i)
+			} else {
+				max = Max(max, i-stack[len(stack)-1])
+			}
+		}
+	}
+
+	return max
 }
