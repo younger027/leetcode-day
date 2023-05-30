@@ -2,9 +2,11 @@ package tree
 
 import (
 	list2 "container/list"
+	"context"
 	"fmt"
 	leetcode "leetcode/leetcode/hot-100"
 	"math"
+	"sync"
 )
 
 type TreeNode struct {
@@ -729,4 +731,138 @@ func max(a, b int) int {
 		return a
 	}
 	return b
+}
+
+func PreOrderFor(root *TreeNode) []int {
+	if root == nil {
+		return nil
+	}
+
+	list := list2.New()
+	var result []int
+	list.PushBack(root)
+
+	for list.Len() > 0 {
+		node := list.Remove(list.Back()).(*TreeNode)
+		result = append(result, node.Val)
+
+		if node.Right != nil {
+			list.PushBack(node.Right)
+		}
+
+		if node.Left != nil {
+			list.PushBack(node.Left)
+		}
+	}
+
+	return result
+}
+
+func MiddleOrderFor(root *TreeNode) []int {
+	if root == nil {
+		return nil
+	}
+	result := make([]int, 0)
+
+	list := list2.New()
+
+	for list.Len() > 0 || root != nil {
+		if root != nil {
+			list.PushBack(root)
+			root = root.Left
+		} else {
+			root = list.Remove(list.Back()).(*TreeNode)
+			//fmt.Println("node---", root.Val)
+			result = append(result, root.Val)
+			root = root.Right
+		}
+	}
+
+	return result
+}
+
+func BackOrderFor(root *TreeNode) []int {
+	if root == nil {
+		return nil
+	}
+
+	result := make([]int, 0)
+
+	list := list2.New()
+	list.PushBack(root)
+
+	for list.Len() > 0 {
+		node := list.Remove(list.Back()).(*TreeNode)
+		result = append(result, node.Val)
+
+		if node.Left != nil {
+			list.PushBack(node.Left)
+		}
+
+		if node.Right != nil {
+			list.PushBack(node.Right)
+		}
+	}
+
+	reverse(result)
+	return result
+}
+
+//a-1234567890, b-abcdc
+func WriteA() {
+	a := []byte{'1', '2'}
+	b := []byte{'a', 'b'}
+
+	ch := make(chan byte)
+
+	var wg sync.WaitGroup
+	wg.Add(2)
+
+	ctx, cancel := context.WithCancel(context.Background())
+
+	go func() {
+		for i := 0; i < len(a); i++ {
+			ch <- a[i]
+			ch <- b[i]
+		}
+		wg.Done()
+		cancel()
+
+	}()
+
+	go func(ctx context.Context) {
+		defer wg.Done()
+		for {
+			select {
+			case s := <-ch:
+				//make something-BackOrderFor(nil)
+				println("read bytes, ", s)
+			case <-ctx.Done():
+				close(ch)
+				return
+			}
+		}
+
+	}(ctx)
+
+	wg.Wait()
+}
+
+func partition(list []int, low, high int) int {
+	pivot := list[low]
+	for low < high {
+		for low < high && pivot <= list[high] {
+			high--
+		}
+		list[low] = list[high]
+
+		for low < high && pivot >= list[low] {
+			low++
+		}
+
+		list[high] = list[low]
+	}
+	//pivot 填补 low位置的空值
+	list[low] = pivot
+	return low
 }

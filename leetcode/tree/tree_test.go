@@ -58,12 +58,27 @@ func TestPreorderTraverse(t *testing.T) {
 }
 
 func TestBuildTree(t *testing.T) {
-	preorder := []int{3, 9, 20, 15, 7}
-	inorder := []int{9, 3, 15, 20, 7}
+	//preorder := []int{3, 9, 20, 15, 7}
+	//inorder := []int{9, 3, 15, 20, 7}
+	//
+	//root := buildTree(preorder, inorder)
+	//LevelTraverse(root)
+	//
+	//data := []int{7, 1, 5, 3, 6, 4}
+	//t.Log(maxProfit(data))
 
-	root := buildTree(preorder, inorder)
-	LevelTraverse(root)
+	//data := []int{3, 9, 20, 1, 4, 15, 7}
+	//root := InitBinaryTree(data, 0)
+	//LevelTraverse(root)
+	//
+	//t.Log(PreOrderFor(root))
+	//t.Log(MiddleOrderFor(root))
+	//t.Log(BackOrderFor(root))
 
-	data := []int{7, 1, 5, 3, 6, 4}
-	t.Log(maxProfit(data))
+	//WriteA()
+
+	array := []int{
+		3, 1, 2, 4, 5,
+	}
+	partition(array, 0, len(array)-1)
 }

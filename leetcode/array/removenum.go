@@ -66,7 +66,6 @@ func RemoveDuplicates(nums []int) int {
 简单
 相关企业
 给定一个数组 nums，编写一个函数将所有 0 移动到数组的末尾，同时保持非零元素的相对顺序。
-
 请注意 ，必须在不复制数组的情况下原地对数组进行操作。*/
 
 func MoveZeroes(nums []int) {
@@ -79,6 +78,17 @@ func MoveZeroes(nums []int) {
 
 	}
 
+}
+
+//target移动到前面，保持顺序不变
+func MoveTarget(nums []int, target int) {
+	slow := len(nums) - 1
+	for i := len(nums) - 1; i >= 0; i-- {
+		if nums[i] != target {
+			nums[slow], nums[i] = nums[i], nums[slow]
+			slow--
+		}
+	}
 }
 
 /*

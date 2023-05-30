@@ -24,16 +24,19 @@ func TestBackspaceCompare(t *testing.T) {
 }
 
 func TestConstructorTwo(t *testing.T) {
-	matrix := [][]int{
-		{3, 0, 1, 4, 2},
-		{5, 6, 3, 2, 1},
-		{1, 2, 0, 1, 5},
-		{4, 1, 0, 1, 7},
-		{1, 0, 3, 0, 5}}
-	this := ConstructorTwo(matrix)
-	this.Show()
+	//matrix := [][]int{
+	//	{3, 0, 1, 4, 2},
+	//	{5, 6, 3, 2, 1},
+	//	{1, 2, 0, 1, 5},
+	//	{4, 1, 0, 1, 7},
+	//	{1, 0, 3, 0, 5}}
+	//this := ConstructorTwo(matrix)
+	//this.Show()
+	//
+	//t.Log(this.SumRegion(2, 1, 4, 3))
+	//t.Log(this.SumRegion(1, 1, 2, 2))
+	//t.Log(this.SumRegion(1, 2, 2, 4))
 
-	t.Log(this.SumRegion(2, 1, 4, 3))
-	t.Log(this.SumRegion(1, 1, 2, 2))
-	t.Log(this.SumRegion(1, 2, 2, 4))
+	data := []int{3, 0, 1, 4, 1, 2}
+	MoveTarget(data, 1)
 }

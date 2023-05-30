@@ -17,5 +17,6 @@ func TestFfib(t *testing.T) {
 
 	//t.Log(integerBreak(10))
 
-	t.Log(canPartition([]int{1, 5, 11, 5}))
+	//t.Log(canPartition([]int{1, 5, 11, 5}))
+	t.Log(findRepeatNumber([]int{2, 3, 1, 0, 2, 5, 3}))
 }
