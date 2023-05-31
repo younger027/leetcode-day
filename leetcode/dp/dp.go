@@ -104,36 +104,52 @@ func numTrees(n int) int {
 	return dp[n]
 }
 
-//分割等和子集
+//416-分割等和子集
 func canPartition(nums []int) bool {
-	path := make([]int, len(nums))
-	used := make([]int, len(nums))
-
-	//for i := 0; i < len(nums); i++ {
-	//
-	//}
-	return BackTrace(nums, &path, 0, &used)
-}
-
-func BackTrace(nums []int, path *[]int, index int, used *[]int) bool {
-	if len(*path) == len(nums)/2 {
-		return isEqueal(nums, *used)
+	sum := 0
+	dp := make([]int, 10001)
+	dp[0] = 0
+	for _, n := range nums {
+		sum += n
 	}
 
-	for i := index; i < len(nums); i++ {
-		*path = append(*path, nums[i])
-		(*used)[i] = 1
-
-		if BackTrace(nums, path, i+1, used) {
-			return true
+	if sum%2 == 1 {
+		return false
+	}
+	target := sum / 2
+	for i := 0; i < len(nums); i++ {
+		for j := target; j >= nums[i]; j-- {
+			dp[j] = leetcode.Max(dp[j], dp[j-nums[i]]+nums[i])
 		}
 
-		*path = (*path)[:len(*path)-1]
-		(*used)[i] = 0
+	}
 
+	if dp[target] == target {
+		return true
 	}
 
 	return false
+}
+
+//1049. 最后一块石头的重量 II
+func lastStoneWeightII(stones []int) int {
+	sum := 0
+	for _, n := range stones {
+		sum += n
+	}
+
+	target := sum / 2
+	dp := make([]int, target+1)
+
+	for i := 0; i < len(stones); i++ {
+		for j := target; j >= stones[i]; j-- {
+			dp[j] = leetcode.Max(dp[j], dp[j-stones[i]]+stones[i])
+		}
+	}
+
+	//最后dp[target]里是容量为target的背包所能背的最大重量。
+	//那么分成两堆石头，一堆石头的总重量是dp[target]，另一堆就是sum - dp[target]。
+	return sum - dp[target] - dp[target]
 }
 
 func isEqueal(nums, used []int) bool {
