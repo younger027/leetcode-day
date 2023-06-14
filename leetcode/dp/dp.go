@@ -3,6 +3,7 @@ package dp
 import (
 	"fmt"
 	leetcode "leetcode/leetcode/hot-100"
+	"math"
 )
 
 func fib(n int) int {
@@ -181,4 +182,71 @@ func findRepeatNumber(nums []int) int {
 	}
 
 	return 0
+}
+
+func findTargetSumWays(nums []int, target int) int {
+	//假设加法的总和为x，那么减法对应的总和就是sum - x。
+	//所以我们要求的是 x - (sum - x) = target
+	//x = (target + sum) / 2
+	sum := 0
+
+	for _, i := range nums {
+		sum += i
+	}
+
+	if int(math.Abs(float64(target))) > sum {
+		return 0
+	}
+
+	if (sum+target)%2 == 1 {
+		return 0
+	}
+	bag := (sum + target) / 2
+
+	dp := make([]int, bag+1)
+
+	dp[0] = 1
+
+	for i := 0; i < len(nums); i++ {
+		for j := bag; j >= nums[i]; j-- {
+			dp[j] += dp[j-nums[i]]
+		}
+	}
+
+	return dp[bag]
+}
+
+//动态规划题目，dp[i][j]代表最多有i个0 j个1的strs数组最大子集的大小
+//dp[i][j] = max(dp[i][j], dp[i-当前str的0的个数][j-当前str的1的个数]+1)
+func findMaxForm(strs []string, m int, n int) int {
+	dp := make([][]int, m+1)
+	for i := 0; i < m+1; i++ {
+		dp[i] = make([]int, n+1)
+	}
+
+	for i := 0; i < m+1; i++ {
+		for j := 0; j < n+1; j++ {
+			dp[i][j] = 0
+		}
+	}
+
+	for _, item := range strs {
+		countZero, countOne := 0, 0
+		for _, c := range item {
+			if c == '0' {
+				countZero += 1
+			} else {
+				countOne += 1
+			}
+		}
+
+		//倒序
+		for i := m; i >= countZero; i-- {
+			for j := n; j >= countOne; j-- {
+				dp[i][j] = leetcode.Max(dp[i][j], dp[i-countZero][j-countOne]+1)
+			}
+		}
+	}
+
+	return dp[m][n]
 }
