@@ -250,3 +250,53 @@ func findMaxForm(strs []string, m int, n int) int {
 
 	return dp[m][n]
 }
+
+//动态规划，完全背包问题
+//定义dp dp[i]代表。总金额为i时，可以凑成i的硬币组合数
+//dp[i] += dp[i-coins[i]]
+//初始化 dp[0]=0
+//遍历顺序：完全背包的遍历顺序，外层遍历物品，内层从小到大遍历容量
+func change(amount int, coins []int) int {
+	dp := make([]int, amount+1)
+	dp[0] = 1
+
+	for i, _ := range coins {
+		for j := coins[i]; j <= amount; j++ {
+			dp[j] += dp[j-coins[i]]
+		}
+	}
+
+	return dp[amount]
+}
+
+//动态规划：dp[i] 代表target是i时，排列的个数
+//dp[i] += dp[i-nums[i]]
+//本题求完全背包的排列数，遍历顺序应该是先从小到大遍历容量，在遍历物品
+func combinationSum4(nums []int, target int) int {
+	dp := make([]int, target+1)
+	dp[0] = 1
+
+	dpp := make([]int, target+1)
+	dpp[0] = 1
+	//外层遍历
+	for i := 0; i <= target; i++ {
+		for j := 0; j < len(nums); j++ {
+			if i >= nums[j] {
+				dpp[i] += dpp[i-nums[j]]
+				fmt.Println("----", j, dpp[j], i)
+			}
+		}
+	}
+
+	fmt.Println("hhhhhhhhhhhhhh")
+	for i, _ := range nums {
+		for j := nums[i]; j <= target; j++ {
+			dp[j] += dp[j-nums[i]]
+			fmt.Println("----", dp[j-nums[i]], dp[j], i)
+		}
+		fmt.Println("zzzzzzzzzz")
+
+	}
+
+	return dp[target]
+}
