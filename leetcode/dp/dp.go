@@ -288,15 +288,133 @@ func combinationSum4(nums []int, target int) int {
 		}
 	}
 
-	fmt.Println("hhhhhhhhhhhhhh")
 	for i, _ := range nums {
 		for j := nums[i]; j <= target; j++ {
 			dp[j] += dp[j-nums[i]]
 			fmt.Println("----", dp[j-nums[i]], dp[j], i)
 		}
-		fmt.Println("zzzzzzzzzz")
 
 	}
 
 	return dp[target]
+}
+
+//爬楼梯
+func climbStairsThird(n int) int {
+	if n == 0 {
+		return 0
+	}
+
+	//定义dp函数，dp[i]代表爬i层阶梯，有dp[i]种排列
+	dp := make([]int, n+1)
+	dp[0] = 1
+
+	//求组合问题，1，3； 3，1；是两种组合。所以需要先遍历重量，而非物品；
+	nums := []int{1, 2}
+	for i := 1; i <= n; i++ {
+		for j := 0; j < len(nums); j++ {
+			dp[i] += dp[i-nums[j]]
+		}
+	}
+
+	return dp[n]
+}
+
+//leetcode 322
+//定义dp函数，dp[i],可以凑成总金额为i的最少得硬币个数是dp[i]
+//dp[i] = min(dp[i], dp[i-coins[j]]+1)；消耗掉本次金币后，最小硬币数是dp[i-coins[j]]，
+//然后加1代表本次需要使用的金币
+//初始化：dp[0] = 0 金额为0时，硬币个数总和肯定为0
+//遍历顺序：金币无限次使用，完全背包。需要先遍历重量，让每次物品都能重复使用。
+//如果先遍历物品的话，物品只能使用一次
+func coinChange(coins []int, amount int) int {
+	dp := make([]int, amount+1)
+	dp[0] = 0
+
+	for i := 1; i <= amount; i++ {
+		dp[i] = math.MaxInt
+	}
+	for i := 0; i <= amount; i++ {
+		for j := 0; j < len(coins); j++ {
+			if i >= coins[j] && dp[i-coins[j]] != math.MaxInt {
+				dp[i] = leetcode.Min(dp[i], dp[i-coins[j]]+1)
+			}
+
+		}
+	}
+
+	if dp[amount] == math.MaxInt {
+		return -1
+	}
+	return dp[amount]
+}
+
+//279. 完全平方数
+//此题和上面的题类似。
+func numSquares(n int) int {
+	dp := make([]int, +1)
+	dp[0] = 0
+
+	for i := 1; i <= n; i++ {
+		dp[i] = math.MaxInt
+	}
+	for i := 0; i <= n; i++ { //背包
+		for j := 1; j*j <= i; j++ { //物品
+			dp[i] = leetcode.Min(dp[i], dp[i-j*j]+1)
+
+		}
+	}
+
+	if dp[n] == math.MaxInt {
+		return -1
+	}
+	return dp[n]
+}
+
+//139. 单词拆分
+//完全背包：dp[i] 代表0-i的字符串，可以拆分成一个或多个dict中的字串
+//dp[i]: if j>i && dp[i]==true && i-j的字串在dict中，那么dp[j] = true
+//初始化问题
+func wordBreak(s string, wordDict []string) bool {
+	dp := make([]bool, len(s)+1)
+	dp[0] = true
+
+	//wordDictSet := make(map[string]bool)
+	//for _, w := range wordDict {
+	//	wordDictSet[w] = true
+	//}
+
+	for i := 1; i <= len(s); i++ {
+		for j := 0; j < i; j++ {
+			if dp[j] && leetcode.FindSubStr(s[j:i], wordDict) {
+				dp[i] = true
+			}
+		}
+	}
+
+	return dp[len(s)]
+}
+
+//300. 最长递增子序列
+//dp[i]： 以i结尾的最长递增子序列的长度
+// if nums[i] > nums[j],  dp[i]= max(dp[i], dp[j]+1)
+func lengthOfLIS(nums []int) int {
+	dp := make([]int, len(nums)+1)
+	for i := range dp {
+		dp[i] = 1
+	}
+
+	res := 1
+	for i := 1; i < len(nums); i++ {
+		for j := 0; j < i; j++ {
+			if nums[i] > nums[j] {
+				dp[i] = leetcode.Max(dp[i], dp[j]+1)
+				if dp[i] > res {
+					res = dp[i]
+				}
+			}
+		}
+	}
+
+	return res
 }

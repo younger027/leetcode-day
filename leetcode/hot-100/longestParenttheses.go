@@ -125,6 +125,13 @@ func Max(a, b int) int {
 	return b
 }
 
+func Min(a, b int) int {
+	if a > b {
+		return b
+	}
+	return a
+}
+
 //2023-4-13 )()())
 func longestValidParenthesesReview(s string) int {
 	if len(s) <= 1 {
