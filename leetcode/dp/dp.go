@@ -418,3 +418,81 @@ func lengthOfLIS(nums []int) int {
 
 	return res
 }
+
+//674. 最长连续递增序列
+//dp[i]: 以i结尾的最长连续递增序列是dp[i]
+//dp[i]: if i=j+1 && nums[i]>nums[j]; dp[i] = dp[j] + 1
+//初始化全部为1，
+func findLengthOfLCIS(nums []int) int {
+	if len(nums) == 0 {
+		return 0
+	}
+
+	dp := make([]int, len(nums)+1)
+	for i := range dp {
+		dp[i] = 1
+	}
+
+	res := 1
+	for i := 1; i < len(nums); i++ {
+		if nums[i] > nums[i-1] {
+			dp[i] = dp[i-1] + 1
+			if dp[i] > res {
+				res = dp[i]
+			}
+		}
+	}
+
+	return res
+}
+
+//674的贪心算法
+func findLengthOfLCIS2(nums []int) int {
+	if len(nums) == 0 {
+		return 0
+	}
+
+	count := 1
+	res := 1
+	for i := 1; i < len(nums); i++ {
+		if nums[i] > nums[i-1] {
+			count += 1
+		} else {
+			count = 1
+		}
+		if count > res {
+			res = count
+		}
+	}
+
+	return res
+}
+
+//718. 最长重复子数组
+//dp[i][j]:dp[i][j] ：以下标i - 1为结尾的A，和以下标j - 1为结尾的B，
+//最长重复子数组长度为dp[i][j]（特别注意： “以下标i - 1为结尾的A” 标明一定是 以A[i-1]为结尾的字符串 ）
+//if nums1[i-1]== nums[j-1], 因为dp的定义是以i-1, j-1结尾的下标，所以此时的判断条件是nums1[i-1]== nums[j-1]。dp[i][j] = dp[i-1][j-1]+1
+func findLength(nums1 []int, nums2 []int) int {
+	m := len(nums1) + 1
+	n := len(nums2) + 1
+	res := 0
+
+	dp := make([][]int, m)
+	for i := 0; i < m; i++ {
+		dp[i] = make([]int, n)
+	}
+
+	for i := 1; i < m; i++ {
+		for j := 1; j < n; j++ {
+			if nums1[i-1] == nums2[j-1] {
+				dp[i][j] = dp[i-1][j-1] + 1
+			}
+
+			if dp[i][j] > res {
+				res = dp[i][j]
+			}
+		}
+	}
+
+	return res
+}
