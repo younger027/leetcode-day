@@ -23,5 +23,6 @@ func TestFfib(t *testing.T) {
 	//t.Log(canPartition([]int{1, 5, 5, 11}))
 	//t.Log(lastStoneWeightII([]int{2, 7, 4, 1, 8, 1}))
 
-	t.Log(combinationSum4([]int{1, 2, 3}, 4))
+	//t.Log(combinationSum4([]int{1, 2, 3}, 4))
+	t.Log(longestCommonSubsequenceDp("123", "avc"))
 }

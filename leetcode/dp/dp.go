@@ -496,3 +496,69 @@ func findLength(nums1 []int, nums2 []int) int {
 
 	return res
 }
+
+//text1 = "ece", text2 = "abcde"
+func longestCommonSubsequenceSelf(text1 string, text2 string) int {
+	len1 := len(text1)
+	len2 := len(text2)
+
+	if len1 > len2 {
+		text1, text2 = text2, text1
+	}
+
+	text1Map := make(map[byte]int, len(text1))
+	for i := 0; i < len(text1); i++ {
+		text1Map[text1[i]] = i + 1
+	}
+
+	text2Map := make(map[byte]int, len(text1))
+	for i := 0; i < len(text2); i++ {
+		text2Map[text2[i]] = i + 1
+	}
+	res := 0
+	index := 0
+	lastIndex := 0
+	for i := 0; i < len(text1); i++ {
+		newIndex, ok := text2Map[text1[i]]
+		if ok {
+			if newIndex > lastIndex {
+				lastIndex = newIndex
+				index += 1
+			} else {
+				index = 1
+			}
+
+		}
+
+		if index > res {
+			res = index
+		}
+	}
+
+	return res
+}
+
+//定义动态规划dp[i][j]代表text1的0，i-1和text2的0，j-1的最长公共子序列是dp[i][j]
+//状态转移方程:dp[i][j]:
+//if text1[i-1]==tex2[j-1]; dp[i][j] = dp[i-1][j-1]+1
+//if not 那就看看text1[0, i - 2]与text2[0, j - 1]的最长公共子序列和text1[0, i-1]与text2[0, j-2]的最长公共子序列，
+//取最大的。dp[i][j] = max(dp[i][j-1],dp[i-1][j])
+//初始化数组，根据定义dp[0][j]代表text1的空串和0-j-1的text2最长公共子序列，自然是0,dp[i][0]自然也是0
+func longestCommonSubsequenceDp(text1 string, text2 string) int {
+	dp := make([][]int, len(text1)+1)
+	for i := 0; i <= len(text1); i++ {
+		dp[i] = make([]int, len(text2)+1)
+	}
+
+	for i := 1; i <= len(text1); i++ {
+		for j := 1; j <= len(text2); j++ {
+			if text1[i-1] == text2[j-1] {
+				dp[i][j] = dp[i-1][j-1] + 1
+			} else {
+				dp[i][j] = leetcode.Max(dp[i-1][j], dp[i][j-1])
+			}
+		}
+	}
+
+	return dp[len(text1)][len(text2)]
+}
