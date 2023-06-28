@@ -497,7 +497,7 @@ func findLength(nums1 []int, nums2 []int) int {
 	return res
 }
 
-//text1 = "ece", text2 = "abcde"
+//1143. 最长公共子序列 text1 = "ece", text2 = "abcde"
 func longestCommonSubsequenceSelf(text1 string, text2 string) int {
 	len1 := len(text1)
 	len2 := len(text2)
@@ -538,7 +538,7 @@ func longestCommonSubsequenceSelf(text1 string, text2 string) int {
 	return res
 }
 
-//定义动态规划dp[i][j]代表text1的0，i-1和text2的0，j-1的最长公共子序列是dp[i][j]
+//1143. 最长公共子序列；定义动态规划dp[i][j]代表text1的0，i-1和text2的0，j-1的最长公共子序列是dp[i][j]
 //状态转移方程:dp[i][j]:
 //if text1[i-1]==tex2[j-1]; dp[i][j] = dp[i-1][j-1]+1
 //if not 那就看看text1[0, i - 2]与text2[0, j - 1]的最长公共子序列和text1[0, i-1]与text2[0, j-2]的最长公共子序列，
@@ -561,4 +561,83 @@ func longestCommonSubsequenceDp(text1 string, text2 string) int {
 	}
 
 	return dp[len(text1)][len(text2)]
+}
+
+//1035. 不相交的线 和上面的题一样，意思就是求最长公共子序列
+//动态五部曲：1.定义动态规则dp[i][j],代表的是nums1以i-1结尾的字符串和nums2以j-1结尾的字符串的最长公共子序列是dp[i][j]
+//规则转化：2.当nums1[i-1] == nums[j-1],dp[i][j]= dp[i-1][j-1]+1,
+//不等于时呢：dp[i][j]就是(nums1的0--i-1 和nums2的0-j)和(nums1的0--i 和nums2的0-j-1)哪个子序列最长
+//dp[i][j] = max(dp[i][j-1], dp[i-1][j])
+//循环遍历即可，因为定义的是i-1,j-1结尾，那么就不用去初始化dp[i][0], dp[0][j]这些行列，默认是0，也是合理的
+func maxUncrossedLines(nums1 []int, nums2 []int) int {
+	m := len(nums1)
+	n := len(nums2)
+
+	dp := make([][]int, m+1)
+	for i := 0; i < m+1; i++ {
+		dp[i] = make([]int, n+1)
+	}
+
+	for i := 1; i <= m; i++ {
+		for j := 1; j <= n; j++ {
+			if nums1[i-1] == nums2[j-1] {
+				dp[i][j] = dp[i-1][j-1] + 1
+			}
+			dp[i][j] = leetcode.Max(dp[i-1][j], dp[i][j-1])
+		}
+	}
+
+	return dp[m][n]
+}
+
+/*
+53. 最大子数组和
+dp[i]：代表以i结尾的数组，其最大子数组和是dp[i]
+公式：max(dp[i-1]+nums[i], nums[i])
+初始化dp[0]=nums[0]
+顺序遍历即可
+*/
+
+func maxSubArray(nums []int) int {
+	m := len(nums)
+	dp := make([]int, m+1)
+	dp[0] = nums[0]
+	res := math.MinInt
+	for i := 1; i <= m; i++ {
+		dp[i] = leetcode.Max(dp[i-1]+nums[i], nums[i])
+
+		if res < dp[i] {
+			res = dp[i]
+		}
+	}
+
+	return res
+}
+
+/*392. 判断子序列
+dp[i][j]:s以i-1结尾，t以j-1结尾的的子序列是长度是dp[i][j]
+当s[i-1]==t[j-1]时，dp[i][j]=dp[i-1][j-1]+1,否则相当于t删除了t[j-1],那就要对比s[i-1]和t[j-2]的情况。即dp[i][j-1]
+初始化的时候，按照dp的定义，dp[0][j]和dp[i][0]都应该是0
+*/
+func isSubsequence(s string, t string) bool {
+	m := len(s)
+	n := len(t)
+
+	dp := make([][]int, m+1)
+	for i := 0; i < m+1; i++ {
+		dp[i] = make([]int, n+1)
+	}
+
+	for i := 1; i <= m; i++ {
+		for j := 1; j <= n; j++ {
+			if s[i-1] == t[j-1] {
+				dp[i][j] = dp[i-1][j-1] + 1
+			} else {
+				dp[i][j] = dp[i][j-1]
+
+			}
+		}
+	}
+
+	return dp[m][n] == m
 }
