@@ -641,3 +641,106 @@ func isSubsequence(s string, t string) bool {
 
 	return dp[m][n] == m
 }
+
+/*
+583. 两个字符串的删除操作
+定义dp[i][j],是以i-1结尾的word1和j-1结尾的word2，相同的最小改变
+方程：当word1[i-1]==word[j-1],dp[i][j] = dp[i-1][j-1]
+不相等时，删除word1的i-1, dp[i-1][j]+1
+删除word2的j-1, dp[i][j-1]+1
+都删除,dp[i-1][j-1]+2.取三者的最小值就行
+***初始化：dp[i][0]的定义，word1要变成空的word2需要删除i-1个元素。那么dp[i][0]=i,dp[0][j]=j
+*/
+
+func minDistance(word1 string, word2 string) int {
+	m := len(word1)
+	n := len(word2)
+
+	dp := make([][]int, m+1)
+	for i := 0; i <= m; i++ {
+		dp[i] = make([]int, n+1)
+	}
+	for i := 0; i <= m; i++ {
+		dp[i][0] = i
+	}
+
+	for i := 0; i <= n; i++ {
+		dp[0][i] = i
+	}
+
+	for i := 1; i <= m; i++ {
+		for j := 1; j <= n; j++ {
+			if word1[i-1] == word2[j-1] {
+				dp[i][j] = dp[i-1][j-1]
+			} else {
+				dp[i][j] = leetcode.Min(dp[i][j-1]+1, leetcode.Min(dp[i-1][j-1]+2, dp[i-1][j]+1))
+			}
+		}
+	}
+
+	return dp[m][n]
+}
+
+/*
+72. 编辑距离
+dp[i][j] 表示以下标i-1为结尾的字符串word1，和以下标j-1为结尾的字符串word2，最近编辑距离为dp[i][j]。
+if word1[i-1]==word2[j-1]，dp[i][j]= dp[i-1][j-1]
+else
+增加/删除。word1增加一个dp[i][j]= dp[i][j-1]+1。相当于word2删除了一个。
+word2增加一个dp[i][j]= dp[i-1][j]+1。相当于word1删除了一个。
+更改：word1的i-1更改成word2的j-1，dp[i][j]= dp[i-1][j-1]+1
+
+*/
+
+func MinDistance(word1 string, word2 string) int {
+	l1 := len(word1)
+	l2 := len(word2)
+
+	dp := make([][]int, l1+1)
+
+	for i := 0; i < l1+1; i++ {
+		dp[i] = make([]int, l2+1)
+	}
+
+	//列
+	for i := 1; i <= l1; i++ {
+		//下面任一都可以，第二条比较好理解
+		//dp[i][0] = dp[i-1][0] + 1
+		dp[i][0] = i
+	}
+
+	//行
+	for j := 1; j <= l2; j++ {
+		//下面任一都可以，第二条比较好理解
+		//dp[0][j] = dp[0][j-1] + 1
+		dp[0][j] = j
+	}
+
+	for i := 1; i <= l1; i++ {
+		for j := 1; j <= l2; j++ {
+			if word1[i-1] == word2[j-1] {
+				dp[i][j] = dp[i-1][j-1]
+			} else {
+				dp[i][j] = minNumThree(dp[i-1][j-1], dp[i-1][j], dp[i][j-1]) + 1
+			}
+		}
+	}
+
+	return dp[l1][l2]
+}
+
+func minNumThree(a, b, c int) int {
+	if a > b {
+		if c > b {
+			return b
+		} else {
+			return c
+		}
+	} else {
+		if c > a {
+			return a
+		} else {
+			return c
+		}
+	}
+}

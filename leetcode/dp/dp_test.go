@@ -1,6 +1,8 @@
 package dp
 
-import "testing"
+import (
+	"testing"
+)
 
 func TestFfib(t *testing.T) {
 	//t.Log(fib(4))
@@ -24,5 +26,6 @@ func TestFfib(t *testing.T) {
 	//t.Log(lastStoneWeightII([]int{2, 7, 4, 1, 8, 1}))
 
 	//t.Log(combinationSum4([]int{1, 2, 3}, 4))
-	t.Log(longestCommonSubsequenceDp("123", "avc"))
+	//t.Log(longestCommonSubsequenceDp("123", "avc"))
+	t.Log(minDistance("a", "b"))
 }
