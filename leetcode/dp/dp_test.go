@@ -27,5 +27,7 @@ func TestFfib(t *testing.T) {
 
 	//t.Log(combinationSum4([]int{1, 2, 3}, 4))
 	//t.Log(longestCommonSubsequenceDp("123", "avc"))
-	t.Log(minDistance("a", "b"))
+	//t.Log(minDistance("a", "b"))
+
+	t.Log(packageSplit(20, []int{1, 2, 19, 18}))
 }

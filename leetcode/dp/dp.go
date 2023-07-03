@@ -4,6 +4,7 @@ import (
 	"fmt"
 	leetcode "leetcode/leetcode/hot-100"
 	"math"
+	"sort"
 )
 
 func fib(n int) int {
@@ -743,4 +744,53 @@ func minNumThree(a, b, c int) int {
 			return c
 		}
 	}
+}
+
+/*
+订单拆解：一个订单n个商品，假如按重量拆为m个子订单，忽略价格因素，
+每个子订单的商品重量不超过x千克，如何分使得子订单数量m最少
+
+n个商品的总重量是一定的，每个子订单的重量也是有限制的。可以采用最简单的方法，排序后，双指针头尾相加，根据和x值的对比，左右++--
+*/
+
+var (
+	res  = make([][]int, 0)
+	path = make([]int, 0)
+)
+
+func packageSplit(x int, weight []int) int {
+	use := make([]bool, len(weight))
+
+	sort.Ints(weight)
+	backTrace(x, 0, 0, weight, &use)
+	for _, item := range res {
+		for _, ii := range item {
+			fmt.Printf("%d-", ii)
+		}
+		fmt.Println("")
+	}
+	return len(res)
+}
+
+func backTrace(x int, currentWeight, startIndex int, weight []int, use *[]bool) {
+	if startIndex < len(weight) && currentWeight+weight[startIndex] == x {
+		dst := make([]int, len(path))
+		copy(dst, path)
+		res = append(res, dst)
+		return
+	}
+
+	for i := startIndex; i < len(weight) && !(*use)[i]; i++ {
+		if currentWeight+weight[i] > x {
+			break
+		}
+		(*use)[i] = true
+		path = append(path, weight[startIndex])
+		currentWeight = currentWeight + weight[startIndex]
+		backTrace(x, currentWeight, i+1, weight, use)
+		(*use)[i] = false
+		path = path[0 : len(path)-1]
+		currentWeight = currentWeight - weight[startIndex]
+	}
+
 }
