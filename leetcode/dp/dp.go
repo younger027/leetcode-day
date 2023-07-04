@@ -759,10 +759,8 @@ var (
 )
 
 func packageSplit(x int, weight []int) int {
-	use := make([]bool, len(weight))
-
 	sort.Ints(weight)
-	backTrace(x, 0, 0, weight, &use)
+	backTrace(x, 0, 0, weight)
 	for _, item := range res {
 		for _, ii := range item {
 			fmt.Printf("%d-", ii)
@@ -772,25 +770,20 @@ func packageSplit(x int, weight []int) int {
 	return len(res)
 }
 
-func backTrace(x int, currentWeight, startIndex int, weight []int, use *[]bool) {
-	if startIndex < len(weight) && currentWeight+weight[startIndex] == x {
+func backTrace(x int, currentWeight, startIndex int, weight []int) {
+	if currentWeight == x {
 		dst := make([]int, len(path))
 		copy(dst, path)
 		res = append(res, dst)
 		return
 	}
 
-	for i := startIndex; i < len(weight) && !(*use)[i]; i++ {
-		if currentWeight+weight[i] > x {
-			break
-		}
-		(*use)[i] = true
-		path = append(path, weight[startIndex])
-		currentWeight = currentWeight + weight[startIndex]
-		backTrace(x, currentWeight, i+1, weight, use)
-		(*use)[i] = false
+	for i := startIndex; i < len(weight); i++ {
+		path = append(path, weight[i])
+		currentWeight = currentWeight + weight[i]
+		backTrace(x, currentWeight, i+1, weight)
 		path = path[0 : len(path)-1]
-		currentWeight = currentWeight - weight[startIndex]
+		currentWeight = currentWeight - weight[i]
 	}
 
 }
