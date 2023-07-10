@@ -771,7 +771,7 @@ func packageSplit(x int, weight []int) int {
 }
 
 func backTrace(x int, currentWeight, startIndex int, weight []int) {
-	if currentWeight == x {
+	if currentWeight > x {
 		dst := make([]int, len(path))
 		copy(dst, path)
 		res = append(res, dst)
@@ -786,4 +786,74 @@ func backTrace(x int, currentWeight, startIndex int, weight []int) {
 		currentWeight = currentWeight - weight[i]
 	}
 
+}
+
+/*647. 回文子串
+dp[i][j]代表以i-1,j-1段是否是回文字串
+推导公式：
+当s[i]不等于s[j]时，那么dp[i][j]肯定不是回文串，所以就是false
+当s[i]等于s[j]时,有以下几种情况：
+1.i==j只有一个字母，那就是回文
+2.i==j-1,相邻的字母，那肯定也是
+3.j-i>1,相差好几个字母，此时判断dp[i+1][j-1]是不是回文就行，如果是，加上前提条件，肯定也是回文
+初始化：默认为false即可
+遍历顺序有很大差别，因为dp[i+1][j-1]在二维数组里面，在dp[i][j]的右下角，dp[i][j]依赖dp[i+1][j-1]的数据，
+所以二维数组的遍历就需要从下到上，从左到右进行，才可以满足条件
+*/
+func countSubstrings(s string) int {
+	length := len(s)
+	dp := make([][]bool, length)
+	for i := range s {
+		dp[i] = make([]bool, length)
+	}
+
+	result := 0
+
+	for i := length - 1; i >= 0; i-- {
+		for j := i; j < length; j++ {
+			if s[i] == s[j] {
+				if j-i <= 1 {
+					result += 1
+					dp[i][j] = true
+				} else if dp[i+1][j-1] {
+					result += 1
+					dp[i][j] = true
+				}
+			}
+		}
+	}
+
+	return result
+}
+
+//最长回文字串，不删除版本
+func longestPalindromeSubSeq(s string) int {
+	length := len(s)
+	dp := make([][]bool, length)
+	for i := range s {
+		dp[i] = make([]bool, length)
+	}
+
+	long := 0
+
+	for i := length - 1; i >= 0; i-- {
+		for j := i; j < length; j++ {
+			if s[i] == s[j] {
+				if j-i <= 1 {
+					dp[i][j] = true
+					fmt.Println(i, j, long)
+				} else if dp[i+1][j-1] {
+					dp[i][j] = true
+					fmt.Println(i, j, long)
+
+				}
+			}
+
+			if dp[i][j] && j-i+1 > long {
+				long = j - i + 1
+			}
+		}
+	}
+
+	return long
 }

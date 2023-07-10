@@ -29,5 +29,8 @@ func TestFfib(t *testing.T) {
 	//t.Log(longestCommonSubsequenceDp("123", "avc"))
 	//t.Log(minDistance("a", "b"))
 
-	t.Log(packageSplit(20, []int{1, 2, 19, 18}))
+	//t.Log(packageSplit(20, []int{1, 2, 19, 18}))
+	//t.Log(countSubstrings("abc"))
+
+	t.Log(longestPalindromeSubSeq("cbbd"))
 }
