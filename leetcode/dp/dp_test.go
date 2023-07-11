@@ -32,5 +32,7 @@ func TestFfib(t *testing.T) {
 	//t.Log(packageSplit(20, []int{1, 2, 19, 18}))
 	//t.Log(countSubstrings("abc"))
 
-	t.Log(longestPalindromeSubSeq("cbbd"))
+	//t.Log(longestPalindromeSubSeq("cbbd"))
+	//t.Log(longestPalindromeSubseq("cbbd"))
+	t.Log(dailyTemperatures([]int{73, 74, 75, 71, 69, 72, 76, 73}))
 }

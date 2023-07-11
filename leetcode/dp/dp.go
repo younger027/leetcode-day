@@ -857,3 +857,59 @@ func longestPalindromeSubSeq(s string) int {
 
 	return long
 }
+
+/*
+516. 最长回文子序列
+dp[i][j]代表以i+1,j-1段最长回文子序列的长度
+当s[i]==s[j]的时候，dp[i][j]=dp[i+1][j-1]+2
+不等于时，就需要判断dp[i+1][j],dp[i][j-1]哪个长度最长
+初始化：i和j相同的时候，dp[i][j]=1，代表s[i]这个单独的字母是回文
+遍历顺序，因为求dp[i][j]时，需要dp[i+1][j-1]，dp[i+1][j]，dp[i][j-1]
+所以顺序是从下往上，从左往右进行遍历，可以画个图看看
+
+*/
+func longestPalindromeSubseq(s string) int {
+	dp := make([][]int, len(s))
+	for i := 0; i < len(s); i++ {
+		dp[i] = make([]int, len(s))
+		dp[i][i] = 1
+	}
+
+	for i := len(s) - 1; i >= 0; i-- {
+		for j := i + 1; j < len(s); j++ {
+			if s[i] == s[j] {
+				dp[i][j] = dp[i+1][j-1] + 2
+			} else {
+				dp[i][j] = leetcode.Max(dp[i+1][j], dp[i][j-1])
+			}
+		}
+	}
+
+	//这里需要根据dp的定义确定返回哪个i，j
+	return dp[0][len(s)-1]
+}
+
+/*
+739. 每日温度
+输入: temperatures = [73,74,75,71,69,72,76,73]
+输出: [1,1,4,2,1,1,0,0]
+*/
+func dailyTemperatures(temperatures []int) []int {
+	if len(temperatures) == 0 {
+		return temperatures
+	}
+
+	result := make([]int, len(temperatures))
+	result[0] = 1
+	prevMax := temperatures[0]
+	prevStep := 0
+	for i := 1; i < len(temperatures); i++ {
+		if temperatures[i] > prevMax {
+			result[i] = i - prevStep + 1
+			prevMax = temperatures[i]
+			prevStep = i
+		}
+	}
+
+	return result
+}
