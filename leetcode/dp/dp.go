@@ -902,22 +902,14 @@ func dailyTemperatures(temperatures []int) []int {
 
 	stack := make([]int, len(temperatures))
 	result := make([]int, len(temperatures))
-	stack = append(stack, 0) //存储下标值
-
+	result[0] = 1
+	prevMax := temperatures[0]
+	prevStep := 0
 	for i := 1; i < len(temperatures); i++ {
-		top := stack[len(stack)-1]
-		if temperatures[i] <= temperatures[top] {
-			stack = append(stack, i)
-		} else {
-			for len(stack) != 0 && temperatures[i] > temperatures[top] {
-				//弹出栈
-				result[top] = i - top
-				stack = stack[:len(stack)-1]
-				if len(stack) != 0 {
-					top = stack[len(stack)-1]
-				}
-			}
-			stack = append(stack, i)
+		if temperatures[i] > prevMax {
+			result[i] = i - prevStep + 1
+			prevMax = temperatures[i]
+			prevStep = i
 		}
 	}
 
