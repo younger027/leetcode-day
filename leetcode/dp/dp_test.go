@@ -34,6 +34,9 @@ func TestFfib(t *testing.T) {
 
 	//t.Log(longestPalindromeSubSeq("cbbd"))
 	//t.Log(longestPalindromeSubseq("cbbd"))
-	t.Log(dailyTemperatures([]int{73, 74, 75, 71, 69, 72, 76, 73}))
-	t.Log(dailyTemperaturesOP([]int{73, 74, 75, 71, 69, 72, 76, 73}))
+	//t.Log(dailyTemperatures([]int{73, 74, 75, 71, 69, 72, 76, 73}))
+	//t.Log(dailyTemperaturesOP([]int{73, 74, 75, 71, 69, 72, 76, 73}))
+
+	t.Log(nextGreaterElementMyself([]int{137, 59, 92, 122, 236},
+		[]int{137, 59, 92, 122, 236}))
 }

@@ -900,7 +900,6 @@ func dailyTemperatures(temperatures []int) []int {
 		return temperatures
 	}
 
-	stack := make([]int, len(temperatures))
 	result := make([]int, len(temperatures))
 	result[0] = 1
 	prevMax := temperatures[0]
@@ -933,6 +932,70 @@ func dailyTemperaturesOP(temperatures []int) []int {
 			stack = stack[:len(stack)-1]
 		}
 		stack = append(stack, i)
+	}
+
+	return result
+}
+
+//496. 下一个更大元素 I //nums1 = [4,1,2], nums2 = [1,3,4,2].
+//make by myself.AC
+func nextGreaterElementMyself(nums1 []int, nums2 []int) []int {
+	more := make(map[int]int, len(nums2))
+	stack := make([]int, 0, len(nums2))
+	stack = append(stack, nums2[0])
+	for i := 1; i < len(nums2); i++ {
+		if len(stack) > 0 && stack[len(stack)-1] < nums2[i] {
+			for len(stack) > 0 && stack[len(stack)-1] < nums2[i] {
+				if len(stack) > 0 {
+					more[stack[len(stack)-1]] = nums2[i]
+					stack = stack[:len(stack)-1]
+				}
+			}
+		}
+
+		stack = append(stack, nums2[i])
+	}
+
+	for len(stack) > 0 {
+		top := stack[len(stack)-1]
+		stack = stack[:len(stack)-1]
+		more[top] = -1
+	}
+
+	result := make([]int, 0, len(nums1))
+	for i := 0; i < len(nums1); i++ {
+		result = append(result, more[nums1[i]])
+	}
+
+	return result
+}
+
+func nextGreaterElement(nums1 []int, nums2 []int) []int {
+	more := make(map[int]int, len(nums2))
+	stack := make([]int, 0, len(nums2))
+	stack = append(stack, nums2[0])
+	for i := 1; i < len(nums2); i++ {
+		if len(stack) > 0 && stack[len(stack)-1] < nums2[i] {
+			for len(stack) > 0 && stack[len(stack)-1] < nums2[i] {
+				if len(stack) > 0 {
+					more[stack[len(stack)-1]] = nums2[i]
+					stack = stack[:len(stack)-1]
+				}
+			}
+		}
+
+		stack = append(stack, nums2[i])
+	}
+
+	for len(stack) > 0 {
+		top := stack[len(stack)-1]
+		stack = stack[:len(stack)-1]
+		more[top] = -1
+	}
+
+	result := make([]int, 0, len(nums1))
+	for i := 0; i < len(nums1); i++ {
+		result = append(result, more[nums1[i]])
 	}
 
 	return result
