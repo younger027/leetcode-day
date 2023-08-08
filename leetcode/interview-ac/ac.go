@@ -1,6 +1,7 @@
 package interview
 
 import (
+	"bytes"
 	"container/list"
 	"fmt"
 )
@@ -209,4 +210,125 @@ func RecursiveBinartTreeLevelOrder(node *TreeNode, depth int) {
 	result[depth] = append(result[depth], node.Value)
 	RecursiveBinartTreeLevelOrder(node.Left, depth+1)
 	RecursiveBinartTreeLevelOrder(node.Right, depth+1)
+}
+
+var (
+	path       []int
+	resultData [][]int
+)
+
+//1155. 掷骰子等于目标和的方法数
+//可以通过测试用例，会超时
+func numRollsToTargetSelf(n int, k int, target int) int {
+	//resultData = make([][]int, 0)
+	Trace(n, k, target, 0)
+
+	return len(resultData)
+}
+
+func Trace(n int, k int, target int, current int) {
+	if current > target {
+		return
+	}
+
+	if current == target && len(path) == n {
+		tmp := make([]int, len(path))
+		copy(tmp, path)
+		resultData = append(resultData, tmp)
+		return
+	}
+
+	for j := 1; j <= k; j++ {
+		path = append(path, j)
+		current += j
+		Trace(n, k, target, current)
+		path = path[:len(path)-1]
+		current -= j
+	}
+
+}
+
+func Sum(path []int) int {
+	sum := 0
+	for _, item := range path {
+		sum += item
+	}
+
+	return sum
+}
+
+/*dp[i][j]代表i个骰子凑成target=j的方案数
+dp[i][j] +== dp[i-1][j-[1~k]].
+第i个骰子的数字是1，当骰子是1时，那么dp[i-1][j-1]就代表i-1个骰子骰出j-1的种类有多少。
+第i个骰子的数字是2，当骰子是2时，那么dp[i-1][j-2]就代表i-1个骰子骰出j-2的种类有多少。
+一直到k。思路主要是反着来的。最后一颗骰子的范围在1~k,那么当第i颗投出这个结果时，种类数就依赖
+前i-1颗能投出j-k的数量了。慢慢品 你可以的。
+初始化：dp[0][j]:0颗骰子投不出其他的j，只能dp[0][0]=1,其他的dp[0][j] = 0,不可能抛出来
+遍历顺序：背包问题，先遍历物品，再背包
+
+*/
+func numRollsToTarget(n int, k int, target int) int {
+	dp := make([][]int, n+1)
+	for i := 0; i < n+1; i++ {
+		dp[i] = make([]int, target+1)
+	}
+
+	dp[0][0] = 1
+	mod := int(1e9 + 7)
+	for i := 1; i <= n; i++ {
+		for j := 1; j <= target; j++ {
+			for z := 1; z <= k && z <= j; z++ {
+				dp[i][j] = (dp[i][j] + dp[i-1][j-z]) % mod
+			}
+		}
+	}
+
+	return dp[n][target]
+}
+
+/*
+# 1768 交替合并字符串
+*/
+func mergeAlternately(word1 string, word2 string) string {
+	len1 := len(word1)
+	len2 := len(word2)
+
+	var result bytes.Buffer
+	for i, j := 0, 0; i < len1 || j < len2; i, j = i+1, j+1 {
+		if i < len1 {
+			result.WriteByte(word1[i])
+		}
+		if j < len2 {
+			result.WriteByte(word2[j])
+		}
+	}
+
+	return result.String()
+}
+
+func gcdOfStrings(str1 string, str2 string) string {
+	len1 := len(str1)
+	len2 := len(str2)
+
+	if len1 > len2 {
+		str1, str2 = str2, str1
+		len1, len2 = len2, len1
+	}
+
+	for i := len1; i > 0; i-- {
+		for j, k := 0, 0; k < len2; j, k = j+1, k+1 {
+			oldJ := j
+			j = j % i
+			if str1[j] != str2[k] {
+				break
+			}
+
+			if k == len2-1 && oldJ == i-1 {
+				return str1[:i]
+			}
+		}
+	}
+
+	return ""
+
 }
