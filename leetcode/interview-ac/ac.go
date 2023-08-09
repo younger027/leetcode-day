@@ -306,29 +306,206 @@ func mergeAlternately(word1 string, word2 string) string {
 	return result.String()
 }
 
-func gcdOfStrings(str1 string, str2 string) string {
+func gcdOfStringsMain(str1 string, str2 string) string {
 	len1 := len(str1)
 	len2 := len(str2)
 
-	if len1 > len2 {
-		str1, str2 = str2, str1
-		len1, len2 = len2, len1
-	}
-
 	for i := len1; i > 0; i-- {
 		for j, k := 0, 0; k < len2; j, k = j+1, k+1 {
-			oldJ := j
 			j = j % i
 			if str1[j] != str2[k] {
 				break
 			}
-
-			if k == len2-1 && oldJ == i-1 {
+			flag := len1 % i
+			flag1 := len2 % i
+			if k == len2-1 && j == i-1 && flag == 0 && flag1 == 0 {
 				return str1[:i]
 			}
 		}
 	}
 
 	return ""
+
+}
+
+func gcdOfStrings(str1 string, str2 string) string {
+	len1 := len(str1)
+	len2 := len(str2)
+
+	if len1 > len2 {
+		str1, str2 = str2, str1
+	}
+
+	data := gcdOfStringsMain(str1, str2)
+	data2 := gcdOfStringsMain(data, str1)
+
+	if data == data2 {
+		return data
+	}
+
+	return ""
+}
+
+/*
+1431. 拥有最多糖果的孩子
+*/
+func kidsWithCandies(candies []int, extraCandies int) []bool {
+	max := 0
+	result := make([]bool, len(candies))
+	for i := 0; i < len(candies); i++ {
+		if candies[i] > max {
+			max = candies[i]
+		}
+	}
+
+	for i := 0; i < len(candies); i++ {
+		if candies[i]+extraCandies >= max {
+			result[i] = true
+		}
+	}
+
+	return result
+}
+
+//605. 种花问题
+func canPlaceFlowers(flowerbed []int, n int) bool {
+	if len(flowerbed) == 1 {
+		if flowerbed[0] == 0 && n <= 1 {
+			return true
+		}
+
+		if flowerbed[0] == 1 && n == 0 {
+			return true
+		}
+		return false
+	}
+
+	if n <= 0 {
+		return true
+	}
+
+	can := 0
+	for i := 0; i < len(flowerbed); i++ {
+		if flowerbed[i] == 0 {
+			if i >= 1 && i < len(flowerbed)-1 && flowerbed[i-1] == 0 && flowerbed[i+1] == 0 {
+				can += 1
+				flowerbed[i] = 1
+			} else if i-1 < 0 && flowerbed[i+1] == 0 {
+				can += 1
+				flowerbed[i] = 1
+			} else if i+1 == len(flowerbed) && flowerbed[i-1] == 0 {
+				can += 1
+				flowerbed[i] = 1
+			}
+		}
+
+	}
+
+	if can >= n {
+		return true
+	}
+
+	return false
+}
+
+func reverseVowels(s string) string {
+	letterMap := map[byte]struct{}{
+		'A': struct{}{},
+		'E': struct{}{},
+		'I': struct{}{},
+		'O': struct{}{},
+		'U': struct{}{},
+		'a': struct{}{},
+		'e': struct{}{},
+		'i': struct{}{},
+		'o': struct{}{},
+		'u': struct{}{},
+	}
+
+	bb := []byte(s)
+	i, j := 0, len(s)-1
+	for i < j {
+		_, ok1 := letterMap[bb[i]]
+		for i < j && !ok1 {
+			i++
+			_, ok1 = letterMap[bb[i]]
+		}
+
+		_, ok2 := letterMap[bb[j]]
+
+		for i < j && !ok2 {
+			j--
+			_, ok2 = letterMap[bb[j]]
+		}
+
+		if i >= j {
+			break
+		}
+
+		bb[i], bb[j] = bb[j], bb[i]
+		i += 1
+		j -= 1
+	}
+
+	return string(bb)
+}
+
+//151. 反转字符串中的单词
+func reverseWords(s string) string {
+	if len(s) <= 1 {
+		return s
+	}
+
+	rr := []rune(s)
+	//全部反转
+	for i, j := 0, len(rr)-1; i < len(rr)/2; i, j = i+1, j-1 {
+		rr[i], rr[j] = rr[j], rr[i]
+	}
+
+	//去除左右，中间多余空格
+	i, j := 0, len(rr)-1
+	for rr[i] == ' ' {
+		i += 1
+	}
+
+	for rr[j] == ' ' {
+		j -= 1
+	}
+
+	rr = rr[i : j+1]
+	fmt.Println("-xxxxx", string(rr))
+
+	//去除左右，中间多余空格
+	slow, fast := 0, 0
+	for fast < len(rr) {
+		if rr[fast] == ' ' && rr[fast-1] == ' ' && fast-1 >= 0 {
+			fast++
+			continue
+		}
+
+		rr[slow] = rr[fast]
+		fast++
+		slow++
+	}
+
+	rr = rr[:slow]
+	fmt.Println("----", string(rr))
+
+	fmt.Println(",", string(rr))
+	//逐个单词反转
+	last := 0
+	for k := 0; k < len(rr); k++ {
+		if rr[k] == ' ' || k == len(rr)-1 {
+			if k == len(rr)-1 {
+				k += 1
+			}
+			for i, j := last, k-1; i < (k-last)/2+last; i, j = i+1, j-1 {
+				rr[i], rr[j] = rr[j], rr[i]
+			}
+			last = k + 1
+		}
+	}
+
+	return string(rr)
 
 }
