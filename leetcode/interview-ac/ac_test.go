@@ -37,5 +37,8 @@ func TestInitTreeNode(t *testing.T) {
 	//t.Log(canPlaceFlowers([]int{0, 0, 1, 0, 1}, 1))
 	//t.Log(reverseVowels("hello"))
 	//t.Log(reverseWords("a good   example"), "-")
-	t.Log(reverseWords("a good   example"), "-")
+	//t.Log(reverseWords("a good   example"), "-")
+	//t.Log(productExceptSelfOp([]int{-1, 1, 0, -3, 3}))
+
+	t.Log(increasingTriplet([]int{5, 4, 3, 2, 1}))
 }

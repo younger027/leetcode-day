@@ -509,3 +509,70 @@ func reverseWords(s string) string {
 	return string(rr)
 
 }
+
+/*
+238. 除自身以外数组的乘积
+*/
+func productExceptSelf(nums []int) []int {
+	result := make([]int, len(nums))
+	left := make([]int, len(nums))
+	right := make([]int, len(nums))
+
+	left[0] = 1
+	for i := 1; i < len(nums); i++ {
+		left[i] = left[i-1] * nums[i-1]
+	}
+
+	right[len(nums)-1] = 1
+	for i := len(nums) - 2; i >= 0; i-- {
+		right[i] = right[i+1] * nums[i+1]
+	}
+
+	for i := 0; i < len(nums); i++ {
+		result[i] = left[i] * right[i]
+	}
+
+	return result
+}
+
+func productExceptSelfOp(nums []int) []int {
+	result := make([]int, len(nums))
+
+	result[0] = 1
+	for i := 1; i < len(nums); i++ {
+		result[i] = result[i-1] * nums[i-1]
+	}
+
+	R := 1
+	for i := len(nums) - 1; i >= 0; i-- {
+		result[i] = result[i] * R
+		R = R * nums[i]
+	}
+
+	return result
+}
+
+/*
+334. 递增的三元子序列
+*/
+func increasingTriplet(nums []int) bool {
+	return BackTrace(nums, 0)
+}
+
+func BackTrace(nums []int, index int) bool {
+	if len(path) == 3 {
+		return true
+	}
+
+	for i := index; i < len(nums); i++ {
+		if len(path) == 0 || path[len(path)-1] < nums[i] {
+			path = append(path, nums[i])
+			if BackTrace(nums, i+1) {
+				return true
+			}
+			path = path[:len(path)-1]
+		}
+	}
+
+	return false
+}
