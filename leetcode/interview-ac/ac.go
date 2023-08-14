@@ -4,6 +4,8 @@ import (
 	"bytes"
 	"container/list"
 	"fmt"
+	"math"
+	"strconv"
 )
 
 //算法面试题重刷
@@ -554,25 +556,94 @@ func productExceptSelfOp(nums []int) []int {
 
 /*
 334. 递增的三元子序列
+
+make by myself.test case is ok, but long nums will execute timeout
 */
 func increasingTriplet(nums []int) bool {
-	return BackTrace(nums, 0)
+	path := make([]int, 0)
+	return BackTrace(nums, 0, path)
 }
 
-func BackTrace(nums []int, index int) bool {
+func BackTrace(nums []int, index int, path []int) bool {
 	if len(path) == 3 {
 		return true
 	}
 
 	for i := index; i < len(nums); i++ {
-		if len(path) == 0 || path[len(path)-1] < nums[i] {
+		if len(path) == 0 || (path)[len(path)-1] < nums[i] {
 			path = append(path, nums[i])
-			if BackTrace(nums, i+1) {
+			if BackTrace(nums, i+1, path) {
 				return true
 			}
-			path = path[:len(path)-1]
+			path = (path)[:len(path)-1]
 		}
 	}
 
 	return false
+}
+
+func increasingTripletOp2(nums []int) bool {
+	first, second := nums[0], math.MaxInt32
+	for i := 0; i < len(nums); i++ {
+		t := nums[i]
+		if t > second {
+			return true
+		} else if t > first {
+			second = t
+		} else {
+			first = t
+		}
+	}
+
+	return false
+}
+func increasingTripletOp3(nums []int) bool {
+	leftMin, rightMax := make([]int, len(nums)), make([]int, len(nums))
+	leftMin[0] = nums[0]
+	for i := 1; i < len(nums); i++ {
+		leftMin[i] = int(math.Min(float64(leftMin[i-1]), float64(nums[i])))
+	}
+
+	rightMax[len(nums)-1] = nums[len(nums)-1]
+	for i := len(nums) - 2; i >= 0; i-- {
+		rightMax[i] = int(math.Max(float64(rightMax[i+1]), float64(nums[i])))
+	}
+
+	for i := 1; i < len(nums)-1; i++ {
+		if nums[i] > leftMin[i-1] && nums[i] < rightMax[i+1] {
+			return true
+		}
+	}
+
+	return false
+}
+
+/*
+443. 压缩字符串
+*/
+func compress(chars []byte) int {
+	write, left := 0, 0
+	for read, ch := range chars {
+		if read == len(chars)-1 || chars[read+1] != ch {
+			chars[write] = ch
+			write++
+			num := read - left + 1
+			if num > 1 {
+				counteByte := IntToBytes(num)
+				for i := 0; i < len(counteByte); i++ {
+					chars[write] = counteByte[i]
+					write++
+				}
+
+			}
+
+			left = read + 1
+		}
+	}
+
+	return write
+}
+func IntToBytes(n int) []byte {
+	str := strconv.Itoa(n)
+	return []byte(str)
 }

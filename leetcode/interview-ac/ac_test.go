@@ -1,7 +1,9 @@
 package interview
 
 import (
+	"fmt"
 	"testing"
+	"unsafe"
 )
 
 func TestInitTreeNode(t *testing.T) {
@@ -40,5 +42,33 @@ func TestInitTreeNode(t *testing.T) {
 	//t.Log(reverseWords("a good   example"), "-")
 	//t.Log(productExceptSelfOp([]int{-1, 1, 0, -3, 3}))
 
-	t.Log(increasingTriplet([]int{5, 4, 3, 2, 1}))
+	//t.Log(increasingTriplet([]int{1, 2, 3, 4, 5}))
+
+	slice := make([]int, 0, 3)
+	slice = append(slice, 1, 2, 3)
+	fmt.Println(unsafe.Pointer(&slice[0]))
+	testSlice(slice)
+	fmt.Println(slice)
+}
+
+func SliceAppend(data []int) {
+	data = append(data, 1, 2)
+	fmt.Println("slice append ", data)
+}
+
+func testSlice(slice []int) {
+	fmt.Println(unsafe.Pointer(&slice[0]))
+	slice = append(slice, 4)
+	slice[0] = 10
+	fmt.Println(unsafe.Pointer(&slice[0]))
+	fmt.Println("----", slice[3])
+	fmt.Println(slice)
+}
+
+func TestCompress(t *testing.T) {
+	t.Log(compress([]byte{'a', 'a', 'b', 'b', 'c', 'c', 'c'}))
+	t.Log(compress([]byte{'a', 'a', 'b', 'b', 'c', 'c', 'c', 'd'}))
+	t.Log(compress([]byte{'a'}))
+
+	t.Log(compress([]byte{'a', 'a', 'a', 'b', 'b', 'a', 'a'}))
 }
