@@ -647,3 +647,75 @@ func IntToBytes(n int) []byte {
 	str := strconv.Itoa(n)
 	return []byte(str)
 }
+
+/*
+283. 移动零
+
+输入: nums = [0,1,0,3,12]
+输出: [1,3,12,0,0]
+*/
+func moveZeroes(nums []int) {
+	slow := 0
+	for i := 0; i < len(nums); i++ {
+		if nums[i] != 0 {
+			nums[slow], nums[i] = nums[i], nums[slow]
+			slow++
+		}
+	}
+}
+
+/*
+392. 判断子序列
+
+*/
+func isSubsequence(s string, t string) bool {
+	m := len(s)
+	n := len(t)
+
+	i, j := 0, 0
+	count := 0
+	for i < m && j < n {
+		if s[i] == t[j] {
+			i++
+			j++
+			count++
+		} else {
+			j++
+		}
+	}
+
+	return count == m
+}
+
+/*
+11. 盛最多水的容器
+输入：[1,8,6,2,5,4,8,3,7]
+输出：49
+*/
+
+func maxArea(height []int) int {
+	minInter := func(a, b int) int {
+		if a < b {
+			return a
+		}
+		return b
+	}
+
+	left, right := 0, len(height)-1
+	total := 0
+	for left < right {
+		//According to math algorithms, we should move the min index. t may be bigger
+		t := minInter(height[left], height[right]) * (right - left)
+		if t > total {
+			total = t
+		}
+
+		if height[left] > height[right] {
+			right--
+		} else {
+			left++
+		}
+	}
+
+	return total
+}

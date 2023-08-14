@@ -66,9 +66,13 @@ func testSlice(slice []int) {
 }
 
 func TestCompress(t *testing.T) {
-	t.Log(compress([]byte{'a', 'a', 'b', 'b', 'c', 'c', 'c'}))
-	t.Log(compress([]byte{'a', 'a', 'b', 'b', 'c', 'c', 'c', 'd'}))
-	t.Log(compress([]byte{'a'}))
+	// t.Log(compress([]byte{'a', 'a', 'b', 'b', 'c', 'c', 'c'}))
+	// t.Log(compress([]byte{'a', 'a', 'b', 'b', 'c', 'c', 'c', 'd'}))
+	// t.Log(compress([]byte{'a'}))
+	// t.Log(compress([]byte{'a', 'a', 'a', 'b', 'b', 'a', 'a'}))
 
-	t.Log(compress([]byte{'a', 'a', 'a', 'b', 'b', 'a', 'a'}))
+	//moveZeroes([]int{0, 1, 0, 3, 12})
+	//t.Log(isSubsequence("axc", "ahbgdc"))
+
+	t.Log(maxArea([]int{1, 8, 6, 2, 5, 4, 8, 3, 7}))
 }
