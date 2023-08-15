@@ -5,6 +5,7 @@ import (
 	"container/list"
 	"fmt"
 	"math"
+	"sort"
 	"strconv"
 )
 
@@ -718,4 +719,61 @@ func maxArea(height []int) int {
 	}
 
 	return total
+}
+
+/*
+1679. K 和数对的最大数目
+输入：nums = [1,2,3,4], k = 5
+输出：2
+*/
+func maxOperations(nums []int, k int) int {
+	sort.Ints(nums)
+	first := 0
+	second := len(nums) - 1
+	count := 0
+	for first < second {
+		if nums[first]+nums[second] < k {
+			first++
+		} else if nums[first]+nums[second] > k {
+			second--
+		} else {
+			count++
+			first++
+			second--
+		}
+	}
+
+	return count
+}
+
+/*
+643. 子数组最大平均数 I
+输入：nums = [1,12,-5,-6,50,3], k = 4
+输出：12.75
+解释：最大平均数 (12-5-6+50)/4 = 51/4 = 12.75
+*/
+
+func findMaxAverage(nums []int, k int) float64 {
+	start := 0
+	total := 0
+	result := math.MinInt32
+	for index, num := range nums {
+		if index-start+1 < k {
+			total += num
+			continue
+		}
+
+		total += num
+
+		if total > result {
+			result = total
+		}
+
+		total -= nums[start]
+		start += 1
+
+	}
+
+	fmt.Println("result", result, result/k)
+	return float64(result / k)
 }

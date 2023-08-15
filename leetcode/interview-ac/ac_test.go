@@ -74,5 +74,10 @@ func TestCompress(t *testing.T) {
 	//moveZeroes([]int{0, 1, 0, 3, 12})
 	//t.Log(isSubsequence("axc", "ahbgdc"))
 
-	t.Log(maxArea([]int{1, 8, 6, 2, 5, 4, 8, 3, 7}))
+	//t.Log(maxArea([]int{1, 8, 6, 2, 5, 4, 8, 3, 7}))
+	// t.Log(maxOperations([]int{2, 2, 2, 3, 1, 1, 4, 1}, 4))
+	// t.Log(maxOperations([]int{3, 1, 3, 4, 3}, 6))
+	// t.Log(maxOperations([]int{1, 2, 3, 4}, 5))
+
+	t.Log(findMaxAverage([]int{1, 12, -5, -6, 50, 3}, 4))
 }
