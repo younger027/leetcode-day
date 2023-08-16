@@ -79,5 +79,13 @@ func TestCompress(t *testing.T) {
 	// t.Log(maxOperations([]int{3, 1, 3, 4, 3}, 6))
 	// t.Log(maxOperations([]int{1, 2, 3, 4}, 5))
 
-	t.Log(findMaxAverage([]int{1, 12, -5, -6, 50, 3}, 4))
+	//t.Log(findMaxAverage([]int{1, 12, -5, -6, 50, 3}, 4))
+
+	//t.Log(maxVowels("abciiidef", 3))
+
+	//t.Log(longestOnes2([]int{1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 0}, 2))
+	t.Log(longestSubarray([]int{1, 1, 0, 1}))
+	t.Log(longestSubarray([]int{0, 1, 1, 1, 0, 1, 1, 0, 1}))
+	t.Log(longestSubarray([]int{1, 1, 1}))
+	t.Log(longestSubarray([]int{1, 1, 0, 0, 1, 1, 1, 0, 1}))
 }

@@ -774,6 +774,132 @@ func findMaxAverage(nums []int, k int) float64 {
 
 	}
 
-	fmt.Println("result", result, result/k)
-	return float64(result / k)
+	fmt.Println("result", result, float64(result)/float64(k))
+	return float64(result) / float64(k)
+}
+
+/*
+1456. 定长子串中元音的最大数目
+输入：s = "abciiidef", k = 3
+输出：3
+解释：子字符串 "iii" 包含 3 个元音字母
+*/
+func maxVowels(s string, k int) int {
+	start := 0
+	count := 0
+	result := 0
+	uMap := make(map[byte]struct{}, 5)
+	uMap['a'] = struct{}{}
+	uMap['e'] = struct{}{}
+	uMap['i'] = struct{}{}
+	uMap['o'] = struct{}{}
+	uMap['u'] = struct{}{}
+
+	for i := 0; i < len(s); i++ {
+		if i-start+1 < k {
+			if _, ok := uMap[s[i]]; ok {
+				count++
+			}
+			continue
+		}
+
+		if _, ok := uMap[s[i]]; ok {
+			count++
+		}
+
+		if count > result {
+			result = count
+		}
+
+		_, ok := uMap[s[start]]
+		if ok {
+			count--
+		}
+		start++
+	}
+
+	return result
+}
+
+/*
+1004. 最大连续1的个数 III
+输入：nums = [1,1,1,0,0,0,1,1,1,1,0], K = 2
+输出：6
+解释：[1,1,1,0,0,1,1,1,1,1,1]
+粗体数字从 0 翻转到 1，最长的子数组长度为 6。
+*/
+func longestOnes(nums []int, k int) int {
+	left, right := 0, 0
+	for right < len(nums) {
+		if nums[right] == 0 {
+			k--
+		}
+		right++
+
+		if k < 0 {
+			if nums[left] == 0 {
+				k++
+			}
+			left++
+		}
+	}
+
+	return right - left
+}
+
+func longestOnes2(nums []int, k int) int {
+	left, right := 0, 0
+	res := 0
+	count := 0
+	for right < len(nums) {
+		if nums[right] == 0 {
+			count++
+		}
+
+		for count > k {
+			if nums[left] == 0 {
+				count--
+			}
+			left++
+		}
+
+		if right-left+1 > res {
+			res = right - left + 1
+		}
+
+		right++
+
+	}
+
+	return res
+}
+
+/*
+1493. 删掉一个元素以后全为 1 的最长子数组
+
+*/
+func longestSubarray(nums []int) int {
+	left, right := 0, 0
+	result := -1
+	count := 0
+	for right < len(nums) {
+		if nums[right] == 0 {
+			count++
+		}
+
+		for count > 1 {
+			if nums[left] == 0 {
+				count--
+			}
+			left++
+		}
+
+		if result < right-left+1 {
+			result = right - left
+		}
+
+		right++
+	}
+
+	return result
 }
