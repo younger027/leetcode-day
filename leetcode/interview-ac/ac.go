@@ -903,3 +903,198 @@ func longestSubarray(nums []int) int {
 
 	return result
 }
+
+/*
+1732. 找到最高海拔
+输入：gain = [-5,1,5,0,-7]
+输出：1
+解释：海拔高度依次为 [0,-5,-4,1,1,-6] 。最高海拔为 1 。
+*/
+func largestAltitude(gain []int) int {
+	result := 0
+	lastNum := 0
+	for _, item := range gain {
+		lastNum += item
+		result = maxInt(result, lastNum)
+	}
+
+	return result
+}
+
+func maxInt(a, b int) int {
+	if a > b {
+		return a
+	}
+
+	return b
+}
+
+/*
+724. 寻找数组的中心下标
+输入：nums = [1, 7, 3, 6, 5, 6]
+输出：3
+解释：
+中心下标是 3 。
+*/
+func pivotIndex(nums []int) int {
+	for i := 0; i < len(nums); i++ {
+		leftTotal := getTotalFromSlice(nums, 0, i-1)
+		rightTotal := getTotalFromSlice(nums, i+1, len(nums)-1)
+
+		if leftTotal == rightTotal {
+			return i
+		}
+	}
+
+	return -1
+}
+
+func getTotalFromSlice(data []int, start, end int) int {
+	total := 0
+
+	if end < 0 || start > len(data)-1 {
+		return total
+	}
+	for i := start; i <= end; i++ {
+		total += data[i]
+	}
+
+	return total
+}
+
+/*
+2215. 找出两数组的不同
+输入：nums1 = [1,2,3], nums2 = [2,4,6]
+输出：[[1,3],[4,6]]
+*/
+
+func findDifference(nums1 []int, nums2 []int) [][]int {
+	nums1Map := make(map[int]struct{}, len(nums1))
+	for _, item := range nums1 {
+		nums1Map[item] = struct{}{}
+	}
+
+	nums2Map := make(map[int]struct{}, len(nums2))
+	for _, item := range nums2 {
+		nums2Map[item] = struct{}{}
+	}
+
+	result := make([][]int, 0, 2)
+	first := make([]int, 0)
+	for k := range nums1Map {
+		if _, ok := nums2Map[k]; !ok {
+			first = append(first, k)
+		}
+	}
+
+	result = append(result, first)
+
+	second := make([]int, 0)
+	for k := range nums2Map {
+		if _, ok := nums1Map[k]; !ok {
+			second = append(second, k)
+		}
+	}
+
+	result = append(result, second)
+
+	return result
+}
+
+func uniqueOccurrences(arr []int) bool {
+	showMap := make(map[int]int, 0)
+	countMap := make(map[int]int, 0)
+	for _, item := range arr {
+		count := showMap[item]
+		count++
+		showMap[item] = count
+	}
+
+	for k, v := range showMap {
+		if _, ok := countMap[v]; ok {
+			return false
+		}
+
+		countMap[v] = k
+	}
+
+	return true
+}
+
+func closeStrings(word1 string, word2 string) bool {
+	nums1Map := make(map[rune]int, 0)
+	countMap := make(map[int]int, 0)
+	for _, item := range word1 {
+		count := nums1Map[item]
+		count++
+		nums1Map[item] = count
+	}
+
+	for _, v := range nums1Map {
+		cur, ok := countMap[v]
+		if !ok {
+			countMap[v] = 1
+			continue
+		}
+		cur++
+		countMap[v] = cur
+	}
+
+	nums2Map := make(map[rune]int, 0)
+	for _, item := range word2 {
+		count := nums2Map[item]
+		count++
+		nums2Map[item] = count
+	}
+
+	for k, v := range nums2Map {
+		cur, ok := countMap[v]
+		_, ok2 := nums1Map[k]
+		if !ok || !ok2 {
+			return false
+		}
+
+		cur--
+		countMap[v] = cur
+	}
+
+	for _, v := range countMap {
+		if v != 0 {
+			return false
+		}
+	}
+
+	return true
+
+}
+
+func equalPairs(grid [][]int) int {
+	m := make(map[int]int, len(grid[0]))
+	n := make(map[int]int, len(grid[0]))
+	for i := 0; i < len(grid[0]); i++ {
+		m[grid[0][i]] = i
+		n[grid[i][0]] = i
+	}
+
+	count := 0
+	for mk, mv := range m {
+		nv, ok := n[mk]
+		if !ok {
+			continue
+		}
+
+		i := 0
+		for i < len(grid[0]) {
+			if grid[i][mv] != grid[nv][i] {
+				break
+			}
+			i++
+		}
+
+		if i == len(grid[0]) {
+			count++
+		}
+	}
+
+	return count
+}

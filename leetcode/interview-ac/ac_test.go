@@ -84,8 +84,16 @@ func TestCompress(t *testing.T) {
 	//t.Log(maxVowels("abciiidef", 3))
 
 	//t.Log(longestOnes2([]int{1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 0}, 2))
-	t.Log(longestSubarray([]int{1, 1, 0, 1}))
-	t.Log(longestSubarray([]int{0, 1, 1, 1, 0, 1, 1, 0, 1}))
-	t.Log(longestSubarray([]int{1, 1, 1}))
-	t.Log(longestSubarray([]int{1, 1, 0, 0, 1, 1, 1, 0, 1}))
+	// t.Log(longestSubarray([]int{1, 1, 0, 1}))
+	// t.Log(longestSubarray([]int{0, 1, 1, 1, 0, 1, 1, 0, 1}))
+	// t.Log(longestSubarray([]int{1, 1, 1}))
+	// t.Log(longestSubarray([]int{1, 1, 0, 0, 1, 1, 1, 0, 1}))
+
+	//t.Log(largestAltitude([]int{-4, -3, -2, -1, 4, 3, 2}))
+	//t.Log(pivotIndex([]int{-1, -1, -1, -1, 0, 1}))
+	//t.Log(findDifference([]int{1, 2, 3, 3}, []int{1, 1, 2, 2}))
+
+	//t.Log(uniqueOccurrences([]int{-3, 0, 1, -3, 1, 1, 1, -3, 10, 0}))
+
+	t.Log(closeStrings("uau", "ssx"))
 }
